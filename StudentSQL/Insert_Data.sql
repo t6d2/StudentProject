@@ -49,6 +49,6 @@ values
 ('Finire il libro "Il sergente nella neve" prima della interrogazione di fine maggio' ,'2018-03-25', null, 5),
 ('Ricerca su Seconda Guerra Mondiale prima della Verifica' ,'2018-03-29', null, 5),
 ('Cercare in internet temi già svolti sul Foscolo', '2018-04-02', '2018-04-05',3),
-('Chiedere a Luca le soluzioni delgi esercizi di matematica', '2018-02-27', '2018-02-27',4),
+('Chiedere a Luca le soluzioni degli esercizi di matematica', '2018-02-27', '2018-02-27',4),
 ('Rivedere il terzo canto del Paradiso di Dante, mi interrogherà di sicuro' ,'2018-04-09', '2018-04-15', 3),
 ('Per la verifica di Mate di fine maggio, cercare esercizi sul web' ,'2018-04-15', '2018-04-25', 3)
