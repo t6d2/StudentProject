@@ -44,7 +44,7 @@ namespace StudentLife
         {
             var clickedMenuItem = sender as MenuItem;
             var textHeader = clickedMenuItem.Header.ToString();
-            DataManagement dm = BaseOperationsForDataManagement(textHeader);
+            BaseOperationsForDataManagement(textHeader);
 
             SetVisibility(dm, dm.Subjects_StackPanel);
 
@@ -55,7 +55,7 @@ namespace StudentLife
         {
             var clickedMenuItem = sender as MenuItem;
             var textHeader = clickedMenuItem.Header.ToString();
-            DataManagement dm = BaseOperationsForDataManagement(textHeader);
+            BaseOperationsForDataManagement(textHeader);
 
             SetVisibility(dm, dm.ClassRoomTasks_StackPanel);
 
@@ -66,7 +66,7 @@ namespace StudentLife
         {
             var clickedMenuItem = sender as MenuItem;
             var textHeader = clickedMenuItem.Header.ToString();
-            DataManagement dm = BaseOperationsForDataManagement(textHeader);
+            BaseOperationsForDataManagement(textHeader);
 
             SetVisibility(dm, dm.Homeworks_StackPanel);
 
@@ -77,7 +77,7 @@ namespace StudentLife
         {
             var clickedMenuItem = sender as MenuItem;
             var textHeader = clickedMenuItem.Header.ToString();
-            DataManagement dm = BaseOperationsForDataManagement(textHeader);
+            BaseOperationsForDataManagement(textHeader);
 
             SetVisibility(dm, dm.Homeworks_StackPanel);
 
@@ -95,12 +95,10 @@ namespace StudentLife
             Application.Current.Shutdown();
         }
 
-        private DataManagement BaseOperationsForDataManagement(string textHeader)
+        private void BaseOperationsForDataManagement(string textHeader)
         {
-
             this.contentMainWindow.Content = dm;
             Display_MenuItem.Visibility = Visibility.Visible;
-            return dm;
         }
 
         private void SetVisibility(DataManagement dm, UIElement el)
