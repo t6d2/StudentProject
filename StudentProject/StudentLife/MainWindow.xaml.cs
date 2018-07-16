@@ -21,6 +21,7 @@ namespace StudentLife
     {
 
         public DbConnection dbc;
+        DataManagement dm = new DataManagement();
 
         public MainWindow()
         {
@@ -96,7 +97,7 @@ namespace StudentLife
 
         private DataManagement BaseOperationsForDataManagement(string textHeader)
         {
-            DataManagement dm = new DataManagement();
+
             this.contentMainWindow.Content = dm;
             Display_MenuItem.Visibility = Visibility.Visible;
             return dm;
