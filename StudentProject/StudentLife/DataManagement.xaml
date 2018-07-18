@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:StudentLife"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" >
-    
+
     <UserControl.Resources>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="10"/>
@@ -21,20 +21,20 @@
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="12"/>
         </Style>
-        
+
         <Style TargetType="Label">
             <Setter Property="FontSize" Value="12"/>
         </Style>
 
         <Style TargetType="TextBox">
-            <Setter Property="Height" Value="20"/>
-            <Setter Property="Margin" Value="5"/>
             <Setter Property="FontSize" Value="12"/>
         </Style>
 
         <Style TargetType="ComboBox">
-            <Setter Property="Height" Value="20"/>
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style TargetType="DatePicker">
             <Setter Property="FontSize" Value="12"/>
         </Style>
 
@@ -74,38 +74,40 @@
                         Visibility="Visible">
 
                 <StackPanel HorizontalAlignment="Center" Margin="5">
-                    <Label Name="Ass_Title" Content="Subjects"
+                    <Label Name="Subject_Title" Content="Subjects"
                            FontSize="24" FontFamily="Segoe UI Black" />
                 </StackPanel>
 
                 <StackPanel  Orientation="Horizontal" Margin="5" >
                     <StackPanel.Resources>
                         <Style TargetType="Label">
-                            <Setter Property="Margin" Value="5,3"/>
-                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Margin" Value="5,5"/>
+                            <Setter Property="FontSize" Value="12"/>
+                        </Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="5,5"/>
+                            <Setter Property="FontSize" Value="12"/>
                         </Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Margin" Value="5,5"/>
+                            <Setter Property="FontSize" Value="12"/>
                         </Style>
                     </StackPanel.Resources>
 
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="85" >
-
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
                         <Label Content="Id" ></Label>
                         <Label Content="Subject" ></Label>
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-                        <TextBlock x:Name="Add_Id_Block" FontWeight="SemiBold"  
-                            Height="25" Margin="5,5"
-                            Text=""  >
-
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="190">
+                        <TextBlock x:Name="SubjectId_TextBlock" Text="{Binding SubjectId}" 
+                            Margin="5,10">
                         </TextBlock>
-                        <TextBox x:Name="Add_Subject_Text" MinWidth="190" Margin="5,3"/>
+                        <TextBox x:Name="SubjectDesciption_TextBox" Margin="5,10" Text="{Binding SubjectDescription}"/>
                     </StackPanel>
-                    
+
                 </StackPanel>
-                
+
             </StackPanel>
 
             <StackPanel x:Name="ClassRoomTasks_StackPanel" Grid.Column="1" Grid.Row="2"
@@ -120,33 +122,39 @@
                 <StackPanel  Orientation="Horizontal" Margin="5" >
                     <StackPanel.Resources>
                         <Style TargetType="Label">
-                            <Setter Property="Margin" Value="5,3"/>
-                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Margin" Value="5,5"/>
+                            <Setter Property="FontSize" Value="12"/>
+                        </Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="5,5"/>
+                            <Setter Property="FontSize" Value="12"/>
                         </Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Margin" Value="5,5"/>
+                            <Setter Property="FontSize" Value="12"/>
                         </Style>
                         <Style TargetType="ComboBox">
                             <Setter Property="Margin" Value="5,8"/>
+                            <Setter Property="FontSize" Value="12"/>
                         </Style>
                     </StackPanel.Resources>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="85" >
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
                         <Label Content="Id" ></Label>
                         <Label Content="Subject"></Label>
-                        <Label Content="Type" Margin="5,8"></Label>
+                        <Label Content="Type"></Label>
                         <Label Content="When" ></Label>
                         <Label Content="Vote"></Label>
 
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="190">
                         <TextBlock x:Name="CRT_Id_Block" FontWeight="SemiBold"  
-                            Height="25" Margin="5,5"
-                            Text=""  ></TextBlock>
-                        <ComboBox x:Name="CRT_Subject_ComboBox" MinWidth="150" Margin="5,3"/>
-                        <ComboBox x:Name="CRT_Type_ComboBox" Margin="5,5"/>
-                        <DatePicker x:Name ="CRT_When_DatePicker" Margin="5,3"/>
-                        <TextBox x:Name="CRT_Vote_TextBox" Margin="5,3"/>
+                                Margin="5,10" Text="{Binding TaskId}" ></TextBlock>
+                        <ComboBox x:Name="CRT_Subject_ComboBox" Text="{Binding TaskSubject}" Margin="5,10,5,5"/>
+                        <ComboBox x:Name="CRT_Type_ComboBox" Text="{Binding TaskType}"  Margin="5,10,5,5"/>
+                        <DatePicker x:Name ="CRT_When_DatePicker" Text="{Binding TaskWhenDate}"  Margin="5,5"/>
+                        <TextBox x:Name="CRT_Vote_TextBox" Text="{Binding TaskVote}"  Margin="5,3" Width="20"
+                                 HorizontalAlignment="Left"/>
                     </StackPanel>
 
                 </StackPanel>
@@ -165,8 +173,12 @@
                 <StackPanel  Orientation="Horizontal" Margin="5" >
                     <StackPanel.Resources>
                         <Style TargetType="Label">
-                            <Setter Property="Margin" Value="5,3"/>
-                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Margin" Value="5,5"/>
+                            <Setter Property="FontSize" Value="12"/>
+                        </Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="5,5"/>
+                            <Setter Property="FontSize" Value="12"/>
                         </Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Margin" Value="5,5"/>
@@ -174,9 +186,10 @@
                         </Style>
                         <Style TargetType="ComboBox">
                             <Setter Property="Margin" Value="5,8"/>
+                            <Setter Property="FontSize" Value="12"/>
                         </Style>
                     </StackPanel.Resources>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="85" >
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
                         <Label Content="Id"></Label>
                         <Label Content="Subject"></Label>
                         <Label Content="Homework" Margin="5,10"></Label>
@@ -185,14 +198,16 @@
 
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-                        <TextBlock x:Name="HW_Id_Block" FontWeight="SemiBold"  
-                            Height="25" Margin="5,5"
-                            Text=""  ></TextBlock>
-                        <ComboBox x:Name="HW_Subject_ComboBox" MinWidth="150" Margin="5,3"/>
-                        <TextBox x:Name="HW_Homework_ComboBox" AcceptsReturn="True" AcceptsTab="True" AllowDrop="True" MinHeight="50" Margin="5,5" FontSize="12"/>
-                        <DatePicker x:Name ="HW_StartDate_DatePicker" Margin="5,3"/>
-                        <DatePicker x:Name ="HW_EndDatePicker" Margin="5,5"/>
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="190">
+                        <TextBlock x:Name="HW_Id_Block" Text="{Binding HomeworkId}"
+                                   FontWeight="SemiBold"  
+                            Height="25" Margin="5,5"></TextBlock>
+                        <ComboBox x:Name="HW_Subject_ComboBox" MinWidth="150" Margin="5,3" Text="{Binding HomeworkSubject}"/>
+                        <TextBox x:Name="HW_Homework_ComboBox" Text="{Binding HomeworkDescription}"
+                                 AcceptsReturn="True" AcceptsTab="True" 
+                                 AllowDrop="True" MinHeight="50" Margin="5,5"/>
+                        <DatePicker x:Name ="HW_StartDate_DatePicker" Margin="5,3" Text="{Binding HomeworkStartDate}"/>
+                        <DatePicker x:Name ="HW_EndDatePicker" Margin="5,3" Text="{Binding HomeworkEndDate}"/>
                     </StackPanel>
 
                 </StackPanel>
@@ -211,27 +226,29 @@
                 <StackPanel  Orientation="Horizontal" Margin="5" >
                     <StackPanel.Resources>
                         <Style TargetType="Label">
-                            <Setter Property="Margin" Value="5,3"/>
-                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Margin" Value="5,5"/>
+                            <Setter Property="FontSize" Value="12"/>
+                        </Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="5,5"/>
+                            <Setter Property="FontSize" Value="12"/>
                         </Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Margin" Value="5,5"/>
+                            <Setter Property="FontSize" Value="12"/>
                         </Style>
                     </StackPanel.Resources>
 
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="85" >
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
 
                         <Label Content="Id" ></Label>
                         <Label Content="Task Type" ></Label>
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-                        <TextBlock x:Name="CTT_Id_Block" FontWeight="SemiBold"  
-                            Height="25" Margin="5,5"
-                            Text=""  >
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="190">
+                        <TextBlock x:Name="CTT_Id_Block" Margin="5,10" Text="{Binding TaskTypeId}" />
 
-                        </TextBlock>
-                        <TextBox x:Name="CTT_Description_Text" MinWidth="190" Margin="5,3"/>
+                        <TextBox x:Name="CTT_Description_Text" Text="{Binding TaskTypeDescription}" Margin="5,10"/>
                     </StackPanel>
 
                 </StackPanel>
@@ -244,20 +261,20 @@
                     <Button x:Name="AddButton" Content="Add"
                     Click="AddButton_Click"></Button>
                     <Button x:Name="UpdateButton" Content="Update" 
-                    Click="UpdateButton_Click"></Button>
+                    Click="UpdateButton_Click" IsEnabled="False"></Button>
                     <Button x:Name="DeleteButton" Content="Delete" 
-                    Click="DeleteButton_Click"></Button>
+                    Click="DeleteButton_Click" IsEnabled="False"></Button>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button x:Name="ClearButton" Content="Clear"
-                     Click="ClearButton_Click" FontFamily="Segoe UI Black" ></Button>
+                    <Button x:Name="ResetButton" Content="Reset"
+                     Click="ResetButton_Click" FontFamily="Segoe UI Black" ></Button>
                 </StackPanel>
 
             </StackPanel>
 
             <DataGrid x:Name="Display_DataGrid" IsReadOnly="True" 
-                      Grid.Column="4" Grid.Row="2" Grid.RowSpan="8" Grid.ColumnSpan="3">
+                      Grid.Column="4" Grid.Row="2" Grid.RowSpan="8" Grid.ColumnSpan="3" SelectionChanged="Display_DataGrid_SelectionChanged">
             </DataGrid>
 
         </Grid>

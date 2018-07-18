@@ -20,7 +20,7 @@
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="12"/>
         </Style>
-        
+
         <Style TargetType="Label">
             <Setter Property="FontSize" Value="12"/>
         </Style>
@@ -68,7 +68,7 @@
                                HorizontalAlignment="Left" FontFamily="Viner Hand ITC" FontWeight="Bold">
             </TextBlock>
         </DockPanel>
-        
+
         <ScrollViewer Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="2" >
             <StackPanel  Orientation="Vertical"  >
                 <DataGrid x:Name="ToDoTasks_DataGrid" AutoGenerateColumns="False" IsReadOnly="True"
@@ -93,7 +93,7 @@
                        HorizontalAlignment="Left" FontFamily="Viner Hand ITC" FontWeight="Bold">
             </TextBlock>
         </DockPanel>
-        
+
         <ScrollViewer Grid.Row="5" Grid.Column="1"  Grid.ColumnSpan="2" >
             <StackPanel  Orientation="Vertical"  >
                 <DataGrid x:Name="DoneTasks_DataGrid" AutoGenerateColumns="False" IsReadOnly="True"

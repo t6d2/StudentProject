@@ -20,15 +20,15 @@ namespace StudentLife
     public partial class MainWindow : Window
     {
 
-        public DbConnection dbc;
-        DataManagement dm = new DataManagement();
+        public static DbConnection dbc;
+        public static DataManagement dm;
 
         public MainWindow()
         {
             InitializeComponent();
 
             PrepareStringConnection();
-
+            dm = new DataManagement(dbc);
             this.contentMainWindow.Content = new DataDisplay(dbc);
             Display_MenuItem.Visibility = Visibility.Hidden;
         }
@@ -48,7 +48,7 @@ namespace StudentLife
 
             SetVisibility(dm, dm.Subjects_StackPanel);
 
-            LoadDataManagementGrid(dbc, dm.Display_DataGrid, CreateSQLString(textHeader));
+            LoadDataManagementGrid(dbc, CreateSQLString(textHeader));
         }
 
         private void ClassRoomTasks_Click(object sender, RoutedEventArgs e)
@@ -59,7 +59,7 @@ namespace StudentLife
 
             SetVisibility(dm, dm.ClassRoomTasks_StackPanel);
 
-            LoadDataManagementGrid(dbc, dm.Display_DataGrid, CreateSQLString(textHeader));
+            LoadDataManagementGrid(dbc, CreateSQLString(textHeader));
         }
 
         private void Homework_Click(object sender, RoutedEventArgs e)
@@ -70,7 +70,7 @@ namespace StudentLife
 
             SetVisibility(dm, dm.Homeworks_StackPanel);
 
-            LoadDataManagementGrid(dbc, dm.Display_DataGrid, CreateSQLString(textHeader));
+            LoadDataManagementGrid(dbc, CreateSQLString(textHeader));
         }
 
         private void ClassTask_Click(object sender, RoutedEventArgs e)
@@ -79,9 +79,9 @@ namespace StudentLife
             var textHeader = clickedMenuItem.Header.ToString();
             BaseOperationsForDataManagement(textHeader);
 
-            SetVisibility(dm, dm.Homeworks_StackPanel);
+            SetVisibility(dm, dm.ClassTaskTypes_StackPanel);
 
-            LoadDataManagementGrid(dbc, dm.Display_DataGrid, CreateSQLString(textHeader));
+            LoadDataManagementGrid(dbc, CreateSQLString(textHeader));
         }
 
         private void Display_Click(object sender, RoutedEventArgs e)
@@ -92,13 +92,18 @@ namespace StudentLife
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
+            if (dbc.SqlConn != null)
+                dbc.SqlConn.Close();
+
             Application.Current.Shutdown();
         }
 
         private void BaseOperationsForDataManagement(string textHeader)
         {
+
             this.contentMainWindow.Content = dm;
             Display_MenuItem.Visibility = Visibility.Visible;
+
         }
 
         private void SetVisibility(DataManagement dm, UIElement el)
@@ -109,7 +114,7 @@ namespace StudentLife
                     : Visibility.Hidden;
         }
 
-        private string CreateSQLString(string textHeader)
+        public string CreateSQLString(string textHeader)
         {
             string stringSQL = "";
             switch (textHeader)
@@ -118,7 +123,7 @@ namespace StudentLife
                     stringSQL = "select Id, Description as 'Subject' from Subjects";
                     break;
                 case "ClassRoomTasks":
-                    stringSQL = "select ct.Id, convert(nvarchar(MAX), ct.WhenDate, 101) as 'Date', " +
+                    stringSQL = "select ct.Id, convert(nvarchar(MAX), ct.WhenDate, 103) as 'Date', " +
                         "ct.Vote, crt.Description as 'Task Type', s.Description as 'Subject' " +
                         "from ClassRoomTasks as ct " +
                         "left Join ClassroomTaskTypes as crt on crt.Id = ct.TaskId " +
@@ -126,8 +131,8 @@ namespace StudentLife
                     break;
                 case "HomeWorks":
                     stringSQL = "select h.Id, h.Description as 'Activity', " +
-                        "convert(nvarchar(MAX), h.StartDate, 101) as 'Start Date', " +
-                        "convert(nvarchar(MAX), h.EndDate, 101) as 'End Date', " +
+                        "convert(nvarchar(MAX), h.StartDate, 103) as 'Start Date', " +
+                        "convert(nvarchar(MAX), h.EndDate, 103) as 'End Date', " +
                         "s.Description as 'Subject' " +
                         "from Homeworks as h " +
                         "left join Subjects as s on s.Id = h.SubjectId";
@@ -140,7 +145,7 @@ namespace StudentLife
             return stringSQL;
         }
 
-        public void LoadDataManagementGrid(DbConnection dbc, DataGrid dg, string stringSQL)
+        public void LoadDataManagementGrid(DbConnection dbc, string stringSQL)
         {
             dbc.Comm.CommandText = stringSQL;
             dbc.Comm.CommandType = CommandType.Text;
@@ -150,8 +155,15 @@ namespace StudentLife
                 if (reader.HasRows)
                 {
                     DataTable dt = new DataTable();
+                    //dt.Columns.Add("Subject", typeof(String));
+                    //dm.CRT_Subject_ComboBox. ???
+                    //dm.CRT_Subject_ComboBox.ItemsSource = dt.Columns("Subject") ???
                     dt.Load(reader);
-                    dg.ItemsSource = dt.DefaultView;
+                    dm.Display_DataGrid.ItemsSource = dt.DefaultView;
+                    dm.AddButton.IsEnabled = true;
+                    dm.UpdateButton.IsEnabled = false;
+                    dm.DeleteButton.IsEnabled = false;
+
                 }
             }
         }
