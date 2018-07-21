@@ -73,6 +73,16 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\ClassRoomTask.cs" />
+    <Compile Include="Classes\ClassRoomTaskType.cs" />
+    <Compile Include="Classes\DbConnection.cs" />
+    <Compile Include="Classes\GridDisplayCreator.cs" />
+    <Compile Include="Classes\GridManagementCreator.cs" />
+    <Compile Include="Classes\HomeWork.cs" />
+    <Compile Include="Classes\IGenericTable.cs" />
+    <Compile Include="Classes\OperatorsSQL.cs" />
+    <Compile Include="Classes\Subject.cs" />
+    <Compile Include="Classes\WindowOperations.cs" />
     <Compile Include="DataDisplay.xaml.cs">
       <DependentUpon>DataDisplay.xaml</DependentUpon>
     </Compile>
@@ -111,5 +121,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

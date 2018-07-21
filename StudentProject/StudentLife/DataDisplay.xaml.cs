@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,60 +15,21 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
+using StudentLife.Classes;
 
 namespace StudentLife
 {
     public partial class DataDisplay : UserControl
     {
+        public GridDisplayCreator gdc;
+        private ObservableCollection<Subject> subjCollection = new ObservableCollection<Subject>();
+
         public DataDisplay(DbConnection dbc)
         {
             InitializeComponent();
-
-            LoadDataGrid(dbc, ToDoTasks_DataGrid, new OperatorsSQL(">=", "is", "or"));
-            LoadDataGrid(dbc, DoneTasks_DataGrid, new OperatorsSQL("<", "is not", "and"));
+            gdc = new GridDisplayCreator(dbc);
+            gdc.LoadDataGrid(ToDoTasks_DataGrid, new OperatorsSQL(">=", "is", "or"));
+            gdc.LoadDataGrid(DoneTasks_DataGrid, new OperatorsSQL("<", "is not", "and"));
         }
-
-        public void LoadDataGrid(DbConnection dbc, DataGrid dg, OperatorsSQL op)
-        {
-
-            string referenceDate = "2018-04-01";    // data di riferimento fissa al 2018-04-01
-            dbc.Comm.CommandText = "select h.Description, CONVERT(date, h.StartDate), CONVERT(date, h.EndDate), s.Description" +
-                                    " from Homeworks as h " +
-                                    "join Subjects as s on s.Id = h.SubjectId " +
-                                    $"where (StartDate {op.MoreLessOperator} '{referenceDate}') " +
-                                    $"{op.OrAndOperator} (h.EndDate {op.NullOperator} Null) " +
-                                    "order by h.StartDate ";
-
-            dbc.Comm.CommandType = CommandType.Text;
-            var homeWorkList = new List<HomeWork>();
-            using (SqlDataReader reader = dbc.Comm.ExecuteReader())
-            {
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        HomeWork hw = new HomeWork
-                        {
-                            Description = reader.GetString(0),
-                            StartDate = reader.GetDateTime(1),
-                            EndDate = reader.IsDBNull(2)
-                            ? (DateTime?)null
-                            : reader.GetDateTime(2),
-                            SubjectDescription = reader.GetString(3)
-                        };
-                        homeWorkList.Add(hw);
-                    }
-                    dg.ItemsSource = homeWorkList;
-                }
-            }
-        }
-    }
-
-    class HomeWork
-    {
-        public string Description { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
-        public string SubjectDescription { get; set; }
     }
 }

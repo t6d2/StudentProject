@@ -14,74 +14,64 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
+using StudentLife.Classes;
 
 namespace StudentLife
 {
     public partial class MainWindow : Window
     {
-
         public static DbConnection dbc;
         public static DataManagement dm;
+        public GridManagementCreator gmc;
 
         public MainWindow()
         {
+
             InitializeComponent();
 
-            PrepareStringConnection();
-            dm = new DataManagement(dbc);
+            dm = new DataManagement();
+
+            InitializeData();
             this.contentMainWindow.Content = new DataDisplay(dbc);
             Display_MenuItem.Visibility = Visibility.Hidden;
+
         }
 
-        private void PrepareStringConnection()
+        private void InitializeData()
         {
-            string connectionSQlString =
-                   @"Data Source=.\sqlexpress;Database=StudentLife;Integrated Security=True";
-            dbc = new DbConnection(connectionSQlString);
+
+
+            dbc = new DbConnection();
         }
 
         private void Subjects_Click(object sender, RoutedEventArgs e)
         {
-            var clickedMenuItem = sender as MenuItem;
-            var textHeader = clickedMenuItem.Header.ToString();
-            BaseOperationsForDataManagement(textHeader);
-
-            SetVisibility(dm, dm.Subjects_StackPanel);
-
-            LoadDataManagementGrid(dbc, CreateSQLString(textHeader));
+            MenuItemOperations(sender, dm.Subjects_StackPanel);
         }
-
         private void ClassRoomTasks_Click(object sender, RoutedEventArgs e)
         {
-            var clickedMenuItem = sender as MenuItem;
-            var textHeader = clickedMenuItem.Header.ToString();
-            BaseOperationsForDataManagement(textHeader);
-
-            SetVisibility(dm, dm.ClassRoomTasks_StackPanel);
-
-            LoadDataManagementGrid(dbc, CreateSQLString(textHeader));
+            MenuItemOperations(sender, dm.ClassRoomTasks_StackPanel);
         }
 
         private void Homework_Click(object sender, RoutedEventArgs e)
         {
-            var clickedMenuItem = sender as MenuItem;
-            var textHeader = clickedMenuItem.Header.ToString();
-            BaseOperationsForDataManagement(textHeader);
-
-            SetVisibility(dm, dm.Homeworks_StackPanel);
-
-            LoadDataManagementGrid(dbc, CreateSQLString(textHeader));
+            MenuItemOperations(sender, dm.Homeworks_StackPanel);
         }
 
         private void ClassTask_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItemOperations(sender, dm.ClassTaskTypes_StackPanel);
+        }
+
+        private void MenuItemOperations(object sender, StackPanel stackPanel)
         {
             var clickedMenuItem = sender as MenuItem;
             var textHeader = clickedMenuItem.Header.ToString();
             BaseOperationsForDataManagement(textHeader);
 
-            SetVisibility(dm, dm.ClassTaskTypes_StackPanel);
-
-            LoadDataManagementGrid(dbc, CreateSQLString(textHeader));
+            SetVisibility(dm, stackPanel);
+            gmc = new GridManagementCreator(dbc, dm, textHeader);
+            gmc.LoadDataManagementGrid(gmc.CreateSQLString());
         }
 
         private void Display_Click(object sender, RoutedEventArgs e)
@@ -112,87 +102,6 @@ namespace StudentLife
                 panel.Visibility = panel == el
                     ? Visibility.Visible
                     : Visibility.Hidden;
-        }
-
-        public string CreateSQLString(string textHeader)
-        {
-            string stringSQL = "";
-            switch (textHeader)
-            {
-                case "Subjects":
-                    stringSQL = "select Id, Description as 'Subject' from Subjects";
-                    break;
-                case "ClassRoomTasks":
-                    stringSQL = "select ct.Id, convert(nvarchar(MAX), ct.WhenDate, 103) as 'Date', " +
-                        "ct.Vote, crt.Description as 'Task Type', s.Description as 'Subject' " +
-                        "from ClassRoomTasks as ct " +
-                        "left Join ClassroomTaskTypes as crt on crt.Id = ct.TaskId " +
-                        "left join Subjects as s on s.Id = ct.SubjectId";
-                    break;
-                case "HomeWorks":
-                    stringSQL = "select h.Id, h.Description as 'Activity', " +
-                        "convert(nvarchar(MAX), h.StartDate, 103) as 'Start Date', " +
-                        "convert(nvarchar(MAX), h.EndDate, 103) as 'End Date', " +
-                        "s.Description as 'Subject' " +
-                        "from Homeworks as h " +
-                        "left join Subjects as s on s.Id = h.SubjectId";
-                    break;
-                case "ClassTask Types":
-                    stringSQL = "select Id, Description as 'Task Type Description' from ClassRoomTaskTypes";
-                    break;
-            }
-
-            return stringSQL;
-        }
-
-        public void LoadDataManagementGrid(DbConnection dbc, string stringSQL)
-        {
-            dbc.Comm.CommandText = stringSQL;
-            dbc.Comm.CommandType = CommandType.Text;
-
-            using (SqlDataReader reader = dbc.Comm.ExecuteReader())
-            {
-                if (reader.HasRows)
-                {
-                    DataTable dt = new DataTable();
-                    //dt.Columns.Add("Subject", typeof(String));
-                    //dm.CRT_Subject_ComboBox. ???
-                    //dm.CRT_Subject_ComboBox.ItemsSource = dt.Columns("Subject") ???
-                    dt.Load(reader);
-                    dm.Display_DataGrid.ItemsSource = dt.DefaultView;
-                    dm.AddButton.IsEnabled = true;
-                    dm.UpdateButton.IsEnabled = false;
-                    dm.DeleteButton.IsEnabled = false;
-
-                }
-            }
-        }
-    }
-
-    public class DbConnection
-    {
-        public SqlConnection SqlConn { get; }
-        public SqlCommand Comm { get; }
-
-        public DbConnection(string connectionSQlString)
-        {
-            SqlConn = new SqlConnection(connectionSQlString);
-            Comm = SqlConn.CreateCommand();
-            SqlConn.Open();
-        }
-    }
-
-    public class OperatorsSQL
-    {
-        public string MoreLessOperator { get; }
-        public string NullOperator { get; }
-        public string OrAndOperator { get; }
-
-        public OperatorsSQL(string moreLessOperator, string nullOperator, string orAndOperator)
-        {
-            MoreLessOperator = moreLessOperator;
-            NullOperator = nullOperator;
-            OrAndOperator = orAndOperator;
         }
     }
 }
