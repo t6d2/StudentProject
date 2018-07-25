@@ -21,57 +21,46 @@ namespace StudentLife
     public partial class MainWindow : Window
     {
         public static DbConnection dbc;
-        public static DataManagement dm;
-        public GridManagementCreator gmc;
 
         public MainWindow()
         {
-
             InitializeComponent();
-
-            dm = new DataManagement();
 
             InitializeData();
             this.contentMainWindow.Content = new DataDisplay(dbc);
             Display_MenuItem.Visibility = Visibility.Hidden;
-
         }
 
         private void InitializeData()
         {
-
 
             dbc = new DbConnection();
         }
 
         private void Subjects_Click(object sender, RoutedEventArgs e)
         {
-            MenuItemOperations(sender, dm.Subjects_StackPanel);
+            MenuItemOperations(sender);
         }
         private void ClassRoomTasks_Click(object sender, RoutedEventArgs e)
         {
-            MenuItemOperations(sender, dm.ClassRoomTasks_StackPanel);
+            MenuItemOperations(sender);
         }
 
         private void Homework_Click(object sender, RoutedEventArgs e)
         {
-            MenuItemOperations(sender, dm.Homeworks_StackPanel);
+            MenuItemOperations(sender);
         }
 
         private void ClassTask_Click(object sender, RoutedEventArgs e)
         {
-            MenuItemOperations(sender, dm.ClassTaskTypes_StackPanel);
+            MenuItemOperations(sender);
         }
 
-        private void MenuItemOperations(object sender, StackPanel stackPanel)
+        private void MenuItemOperations(object sender)
         {
             var clickedMenuItem = sender as MenuItem;
             var textHeader = clickedMenuItem.Header.ToString();
             BaseOperationsForDataManagement(textHeader);
-
-            SetVisibility(dm, stackPanel);
-            gmc = new GridManagementCreator(dbc, dm, textHeader);
-            gmc.LoadDataManagementGrid(gmc.CreateSQLString());
         }
 
         private void Display_Click(object sender, RoutedEventArgs e)
@@ -88,20 +77,26 @@ namespace StudentLife
             Application.Current.Shutdown();
         }
 
-        private void BaseOperationsForDataManagement(string textHeader)
+        private void BaseOperationsForDataManagement(string menuItemName)
         {
+            switch (menuItemName)
+            {
+                case "Subjects":
+                    this.contentMainWindow.Content = new DataSubject(dbc);
+                    break;
+                case "ClassRoomTasks":
+                    this.contentMainWindow.Content = new DataClassRoomTask(dbc);
+                    break;
+                case "HomeWorks":
+                    this.contentMainWindow.Content = new DataHomework(dbc);
+                    break;
+                case "ClassTask Types":
+                    this.contentMainWindow.Content = new DataClassRoomTaskType(dbc);
+                    break;
 
-            this.contentMainWindow.Content = dm;
+            }
             Display_MenuItem.Visibility = Visibility.Visible;
 
-        }
-
-        private void SetVisibility(DataManagement dm, UIElement el)
-        {
-            foreach (UIElement panel in dm._stackPanels)
-                panel.Visibility = panel == el
-                    ? Visibility.Visible
-                    : Visibility.Hidden;
         }
     }
 }

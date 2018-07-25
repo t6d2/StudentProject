@@ -22,7 +22,6 @@ namespace StudentLife
     public partial class DataDisplay : UserControl
     {
         public GridDisplayCreator gdc;
-        private ObservableCollection<Subject> subjCollection = new ObservableCollection<Subject>();
 
         public DataDisplay(DbConnection dbc)
         {

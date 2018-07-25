@@ -12,14 +12,13 @@ namespace StudentLife.Classes
 {
     public class GridDisplayCreator
     {
-        public DbConnection Dbc { get; set; }
+        private DbConnection Dbc { get; set; }
 
         public GridDisplayCreator(DbConnection dbc)
         {
 
             Dbc = dbc;
         }
-
 
         public void LoadDataGrid(DataGrid dg, OperatorsSQL op)
         {

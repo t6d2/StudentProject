@@ -8,7 +8,7 @@ using System.Data;
 
 namespace StudentLife.Classes
 {
-    public class HomeWork : IGenericTable
+    public class HomeWork 
     {
         public string Id { get; set; }
         public string Description { get; set; }
@@ -16,45 +16,50 @@ namespace StudentLife.Classes
         public string StartDate { get; set; }
         public DateTime? End_Date { get; set; }
         public string EndDate { get; set; }
-        public List<Subject> ListSubjectsDescription { get; set; }
         public string SubjectDescription { get; set; }
-        public string PrepareQueryString { get; set; }
 
-        public void CreateToDB()
+        public string PrepareSQLStringForUpdateToDB()
         {
-            throw new NotImplementedException();
+
+            var queryString = "";
+            if (!String.IsNullOrEmpty(Description) && !String.IsNullOrEmpty(StartDate))
+            {
+                string StartDateForSqlString =
+                "'" + (StartDate.Substring(6, 4) + "-" + StartDate.Substring(3, 2) + "-" + StartDate.Substring(0, 2) + " 00:00:00'");
+                string EndDateForSqlString =
+                    !String.IsNullOrEmpty(EndDate)
+                    ? "'" + (EndDate.Substring(6, 4) + "-" + EndDate.Substring(3, 2) + "-" + EndDate.Substring(0, 2) + " 00:00:00'")
+                    : "null";
+                queryString = $"update HomeWorks set Description = '{Description}', " +
+                        $"StartDate = {StartDateForSqlString}, EndDate = {EndDateForSqlString}, " +
+                        $"SubjectId = (select Id from Subjects where Description = '{SubjectDescription}') " +
+                        $"where Id = {Id}";
+            }
+            return queryString;
         }
 
-        public void PopulateUserCtrlFieldsfromDataGrid(StackPanel stackPanel, DataRowView drv)
+        public string PrepareSQLStringForDeleteToDB()
         {
-            //Id = HW_Id_Block.Text = drv["Id"].ToString();
-            //Description = HW_Homework_TextBox.Text = drv["Activity"].ToString();
-            //StartDate = HW_StartDate_DatePicker.Text = drv["Start Date"].ToString();
-            //EndDate = drv["End Date"].ToString();
-            //SubjectDescription = HW_EndDatePicker.Text = drv["Subject"].ToString();
+            return "delete from HomeWorks " +
+                                 $"where Id = {Id}";
         }
 
-        public void PrepareSQLStringForReadingDB()
+        public string PrepareSQLStringForInsertToDB()
         {
-            PrepareQueryString = "select h.Id, h.Description as 'Activity', " +
-                        "convert(nvarchar(MAX), h.StartDate, 103) as 'Start Date', " +
-                        "convert(nvarchar(MAX), h.EndDate, 103) as 'End Date', " +
-                        "s.Description as 'Subject' " +
-                        "from Homeworks as h " +
-                        "left join Subjects as s on s.Id = h.SubjectId";
-        }
-
-        public void PrepareSQLStringForUpdateToDB()
-        {
-            PrepareQueryString = "update HomeWorks " +
-                          "set Description = @Description, set StartDate = @StartDate, EndtDate = @EndtDate, SubjectId = @SubjectId " +
-                          "where Id = @Id";
-        }
-
-        public void PrepareSQLStringForInsertToDB()
-        {
-            PrepareQueryString = "insert into ClassRoomTasks (WhenDate, Vote, TaskId) " +
-                          "values (@WhenDate, @Vote, @TaskId, @SubjectId) ";
+            var queryString = "";
+            if (!String.IsNullOrEmpty(Description) && !String.IsNullOrEmpty(StartDate))
+            {
+                string StartDateForSqlString =
+                "'" + (StartDate.Substring(6, 4) + "-" + StartDate.Substring(3, 2) + "-" + StartDate.Substring(0, 2) + " 00:00:00'");
+                string EndDateForSqlString =
+                    !String.IsNullOrEmpty(EndDate)
+                    ? "'" + (EndDate.Substring(6, 4) + "-" + EndDate.Substring(3, 2) + "-" + EndDate.Substring(0, 2) + " 00:00:00'")
+                    : "null";
+                queryString = "insert into Homeworks (Description, StartDate, EndDate, SubjectId) " +
+                          $"values ('{Description}', {StartDateForSqlString} , {EndDateForSqlString}, " +
+                          $"(select Id from Subjects where Description = '{SubjectDescription}')) ";
+            }
+            return queryString;
         }
 
         public string PrepareSQLForDataManagementGrid()

@@ -7,6 +7,7 @@
         mc:Ignorable="d"  FontSize="18" FontFamily="Segoe UI Light"
         WindowStartupLocation="CenterScreen" Background="AntiqueWhite"
          Title="Student Life" Height="450" Width="800" Margin="0" >
+    
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="10"/>

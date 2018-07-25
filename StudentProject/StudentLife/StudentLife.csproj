@@ -57,11 +57,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="DataClassRoomTask.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DataClassRoomTaskType.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DataDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DataManagement.xaml">
+    <Page Include="DataHomework.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DataSubject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -77,17 +89,23 @@
     <Compile Include="Classes\ClassRoomTaskType.cs" />
     <Compile Include="Classes\DbConnection.cs" />
     <Compile Include="Classes\GridDisplayCreator.cs" />
-    <Compile Include="Classes\GridManagementCreator.cs" />
     <Compile Include="Classes\HomeWork.cs" />
-    <Compile Include="Classes\IGenericTable.cs" />
     <Compile Include="Classes\OperatorsSQL.cs" />
     <Compile Include="Classes\Subject.cs" />
-    <Compile Include="Classes\WindowOperations.cs" />
+    <Compile Include="DataClassRoomTask.xaml.cs">
+      <DependentUpon>DataClassRoomTask.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataClassRoomTaskType.xaml.cs">
+      <DependentUpon>DataClassRoomTaskType.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataDisplay.xaml.cs">
       <DependentUpon>DataDisplay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataManagement.xaml.cs">
-      <DependentUpon>DataManagement.xaml</DependentUpon>
+    <Compile Include="DataHomework.xaml.cs">
+      <DependentUpon>DataHomework.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataSubject.xaml.cs">
+      <DependentUpon>DataSubject.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

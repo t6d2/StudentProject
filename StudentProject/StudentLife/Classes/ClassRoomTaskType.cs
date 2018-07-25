@@ -8,34 +8,34 @@ using System.Data;
 
 namespace StudentLife.Classes
 {
-    public class ClassRoomTaskType : IGenericTable
+    public class ClassRoomTaskType 
     {
         public string Id { get; set; }
         public string Description { get; set; }
-        public string PrepareQueryString { get; set; }
 
-        public void PopulateUserCtrlFieldsfromDataGrid(StackPanel stackPanel, DataRowView drv)
+        public string PrepareSQLStringForUpdateToDB()
         {
-            Id = drv["Id"].ToString();
-            Description = drv["Task Type Description"].ToString();
 
+            var queryString = "";
+            if (!String.IsNullOrEmpty(Description))
+                queryString = $"update ClassRoomTaskTypes set Description = '{Description}' " +
+                                 $"where Id = {Id}";
+            return queryString;
         }
 
-        public void PrepareSQLStringForReadingDB()
+        public string PrepareSQLStringForDeleteToDB()
         {
-            PrepareQueryString = "select Id, Description as 'Task Type Description' from ClassRoomTaskTypes";
+            return "delete from ClassRoomTaskTypes " +
+                                 $"where Id = {Id}";
         }
 
-        public void PrepareSQLStringForUpdateToDB()
+        public string PrepareSQLStringForInsertToDB()
         {
-            PrepareQueryString = "update ClassRoomTaskTypes set Description = @Description " +
-                               "where Id = @Id";
-        }
-
-        public void PrepareSQLStringForInsertToDB()
-        {
-            PrepareQueryString = "insert into ClassRoomTaskTypes (Description) " +
-                          "values (@Description) ";
+            var queryString = "";
+            if (!String.IsNullOrEmpty(Description))
+                queryString = "insert into ClassRoomTaskTypes (Description) " +
+                          $"values ('{Description}')";
+            return queryString;
         }
 
         public string PrepareSQLForDataManagementGrid()

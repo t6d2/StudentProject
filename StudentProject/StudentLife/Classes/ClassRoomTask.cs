@@ -8,51 +8,62 @@ using System.Data;
 
 namespace StudentLife.Classes
 {
-    public class ClassRoomTask : IGenericTable
+    public class ClassRoomTask 
     {
         public string Id { get; set; }
         public string WhenDate { get; set; }
         public string Vote { get; set; }
-        public List<ClassRoomTaskType> ListClassRoomTaskType { get; set; }
         public string ClassRoomTaskType { get; set; }
-        public List<Subject> ListSubjectsDescription { get; set; }
         public string SubjectDescritpion { get; set; }
-        public string PrepareQueryString { get; set; }
 
-        public void CreateToDB()
+        public string PrepareSQLStringForUpdateToDB()
         {
-            throw new NotImplementedException();
+
+            var queryString = "";
+            if (!string.IsNullOrEmpty(WhenDate))
+            {
+                string WhenDateForSqlString =
+                !String.IsNullOrEmpty(WhenDate)
+                ? "'" + (WhenDate.Substring(6, 4) + "-" + WhenDate.Substring(3, 2) + "-" + WhenDate.Substring(0, 2) + " 00:00:00'")
+                : "null";
+                string VoteForSqlString =
+                   !String.IsNullOrEmpty(Vote)
+                   ? Vote
+                   : "null";
+                queryString = $"update ClassRoomTasks set WhenDate = {WhenDateForSqlString}, Vote = {VoteForSqlString}, " +
+                        $"TaskId = (select Id from ClassroomTaskTypes where Description = '{ClassRoomTaskType}'), " +
+                        $"SubjectId = (select Id from Subjects where Description = '{SubjectDescritpion}') " +
+                        $"where Id = {Id} ";
+            }
+            return queryString;
         }
 
-        public void PopulateUserCtrlFieldsfromDataGrid(StackPanel stackPanel, DataRowView drv)
+        public string PrepareSQLStringForDeleteToDB()
         {
-            //Id = CRT_Id_Block.Text = drv["Id"].ToString();
-            //WhenDate = CRT_When_DatePicker.Text = drv["Date"].ToString();
-            //Vote = CRT_Vote_TextBox.Text = drv["Vote"].ToString();
-            //ClassRoomTaskType = CRT_Type_ComboBox.Text = drv["Task Type"].ToString();
-            //SubjectDescritpion = CRT_Subject_ComboBox.Text = drv["Subject"].ToString();
+            return "delete from ClassRoomTasks " +
+                                 $"where Id = {Id}";
         }
 
-        public void PrepareSQLStringForReadingDB()
+        public string PrepareSQLStringForInsertToDB()
         {
-            PrepareQueryString = "select ct.Id, convert(nvarchar(MAX), ct.WhenDate, 103) as 'Date', " +
-                        "ct.Vote, crt.Description as 'Task Type', s.Description as 'Subject' " +
-                        "from ClassRoomTasks as ct " +
-                        "left Join ClassroomTaskTypes as crt on crt.Id = ct.TaskId " +
-                        "left join Subjects as s on s.Id = ct.SubjectId";
-        }
 
-        public void PrepareSQLStringForUpdateToDB()
-        {
-            PrepareQueryString = "update ClassRoomTasks " +
-                                 "set WhenDate = @WhenDate, Vote = @Vote, TaskId = @TaskId, SubjectId = @SubjectId " +
-                                 "where Id = @Id";
-        }
-
-        public void PrepareSQLStringForInsertToDB()
-        {
-            PrepareQueryString = "insert into ClassRoomTasks (WhenDate, Vote, TaskId) " +
-                          "values (@WhenDate, @Vote, @TaskId, @SubjectId) ";
+            var queryString = "";
+            if (!string.IsNullOrEmpty(WhenDate))
+            {
+                string WhenDateForSqlString =
+                    !String.IsNullOrEmpty(WhenDate)
+                    ? "'" + (WhenDate.Substring(6, 4) + "-" + WhenDate.Substring(3, 2) + "-" + WhenDate.Substring(0, 2) + " 00:00:00'")
+                    : "null";
+                string VoteForSqlString =
+                    !String.IsNullOrEmpty(Vote)
+                    ? Vote
+                    : "null";
+                queryString = "insert into ClassRoomTasks (WhenDate, Vote, TaskId, SubjectId) " +
+                          $"values ({WhenDateForSqlString}, {VoteForSqlString}, " +
+                          $"(select Id from ClassroomTaskTypes where Description = '{ClassRoomTaskType}')," +
+                          $"(select Id from Subjects where Description = '{SubjectDescritpion}')) ";
+            }
+            return queryString;
         }
 
         public string PrepareSQLForDataManagementGrid()
