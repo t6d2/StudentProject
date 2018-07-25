@@ -95,7 +95,6 @@ namespace StudentLife
                 UpdateButton.IsEnabled = true;
                 DeleteButton.IsEnabled = true;
             }
-
         }
 
         private List<string> LoadComboBox(DataGrid dg, int columnNumber)
@@ -174,6 +173,19 @@ namespace StudentLife
                     Subject_ComboBox.ItemsSource = comboItems;
 
                 }
+            }
+        }
+
+        private void Display_DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            if (e.Column.Header.ToString() == "Activity")
+            {
+                var col = e.Column as DataGridTextColumn;
+
+                var style = new Style(typeof(TextBlock));
+                style.Setters.Add(new Setter(TextBlock.TextWrappingProperty, TextWrapping.Wrap));
+
+                col.ElementStyle = style;
             }
         }
     }

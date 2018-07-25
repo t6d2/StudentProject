@@ -85,7 +85,6 @@ namespace StudentLife
                 UpdateButton.IsEnabled = true;
                 DeleteButton.IsEnabled = true;
             }
-
         }
 
         private void ExecuteDBOperations(string stringSQL, int state)

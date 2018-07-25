@@ -84,7 +84,6 @@ namespace StudentLife
                 UpdateButton.IsEnabled = true;
                 DeleteButton.IsEnabled = true;
             }
-
         }
 
         private List<string> PopulateComboBox(DataGrid dg, int columnNumber)

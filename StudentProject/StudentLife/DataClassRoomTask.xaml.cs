@@ -101,7 +101,6 @@ namespace StudentLife
                 UpdateButton.IsEnabled = true;
                 DeleteButton.IsEnabled = true;
             }
-
         }
 
         private List<string> LoadComboBox(DataGrid dg, int columnNumber)
@@ -155,7 +154,6 @@ namespace StudentLife
                     MessageBox.Show(ex.Message);
             }
         }
-
 
         private void ClassRoomTaskData_Loaded(object sender, RoutedEventArgs e)
         {

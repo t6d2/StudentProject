@@ -138,7 +138,8 @@
             </StackPanel>
 
             <DataGrid x:Name="Display_DataGrid" IsReadOnly="True" 
-                      Grid.Column="4" Grid.Row="2" Grid.RowSpan="8" Grid.ColumnSpan="3" SelectionChanged="Display_DataGrid_SelectionChanged">
+                      Grid.Column="4" Grid.Row="2" Grid.RowSpan="8" Grid.ColumnSpan="3" 
+                      SelectionChanged="Display_DataGrid_SelectionChanged">
             </DataGrid>
 
         </Grid>
