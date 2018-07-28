@@ -19,23 +19,18 @@ namespace StudentLife.Classes
         public string PrepareSQLStringForUpdateToDB()
         {
 
-            var queryString = "";
-            if (!string.IsNullOrEmpty(WhenDate))
-            {
-                string WhenDateForSqlString =
-                !String.IsNullOrEmpty(WhenDate)
+            string WhenDateForSqlString =
+            !String.IsNullOrEmpty(WhenDate)
                 ? "'" + (WhenDate.Substring(6, 4) + "-" + WhenDate.Substring(3, 2) + "-" + WhenDate.Substring(0, 2) + " 00:00:00'")
                 : "null";
-                string VoteForSqlString =
-                   !String.IsNullOrEmpty(Vote)
-                   ? Vote
-                   : "null";
-                queryString = $"update ClassRoomTasks set WhenDate = {WhenDateForSqlString}, Vote = {VoteForSqlString}, " +
-                        $"TaskId = (select Id from ClassroomTaskTypes where Description = '{ClassRoomTaskType}'), " +
-                        $"SubjectId = (select Id from Subjects where Description = '{SubjectDescritpion}') " +
-                        $"where Id = {Id} ";
-            }
-            return queryString;
+            string VoteForSqlString =
+                !String.IsNullOrEmpty(Vote)
+                ? Vote
+                : "null";
+            return $"update ClassRoomTasks set WhenDate = {WhenDateForSqlString}, Vote = {VoteForSqlString}, " +
+                    $"TaskId = (select Id from ClassroomTaskTypes where Description = '{ClassRoomTaskType}'), " +
+                    $"SubjectId = (select Id from Subjects where Description = '{SubjectDescritpion}') " +
+                    $"where Id = {Id} ";
         }
 
         public string PrepareSQLStringForDeleteToDB()
@@ -47,23 +42,18 @@ namespace StudentLife.Classes
         public string PrepareSQLStringForInsertToDB()
         {
 
-            var queryString = "";
-            if (!string.IsNullOrEmpty(WhenDate))
-            {
-                string WhenDateForSqlString =
-                    !String.IsNullOrEmpty(WhenDate)
-                    ? "'" + (WhenDate.Substring(6, 4) + "-" + WhenDate.Substring(3, 2) + "-" + WhenDate.Substring(0, 2) + " 00:00:00'")
-                    : "null";
-                string VoteForSqlString =
-                    !String.IsNullOrEmpty(Vote)
-                    ? Vote
-                    : "null";
-                queryString = "insert into ClassRoomTasks (WhenDate, Vote, TaskId, SubjectId) " +
-                          $"values ({WhenDateForSqlString}, {VoteForSqlString}, " +
-                          $"(select Id from ClassroomTaskTypes where Description = '{ClassRoomTaskType}')," +
-                          $"(select Id from Subjects where Description = '{SubjectDescritpion}')) ";
-            }
-            return queryString;
+            string WhenDateForSqlString =
+                !String.IsNullOrEmpty(WhenDate)
+                ? "'" + (WhenDate.Substring(6, 4) + "-" + WhenDate.Substring(3, 2) + "-" + WhenDate.Substring(0, 2) + " 00:00:00'")
+                : "null";
+            string VoteForSqlString =
+                !String.IsNullOrEmpty(Vote)
+                ? Vote
+                : "null";
+            return "insert into ClassRoomTasks (WhenDate, Vote, TaskId, SubjectId) " +
+                        $"values ({WhenDateForSqlString}, {VoteForSqlString}, " +
+                        $"(select Id from ClassroomTaskTypes where Description = '{ClassRoomTaskType}')," +
+                        $"(select Id from Subjects where Description = '{SubjectDescritpion}')) ";
         }
 
         public string PrepareSQLForDataManagementGrid()

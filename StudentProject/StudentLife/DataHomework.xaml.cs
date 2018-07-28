@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
 using StudentLife.Classes;
+using System.Globalization;
 
 namespace StudentLife
 {
@@ -35,17 +36,20 @@ namespace StudentLife
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-
-            var stringSQL = homeWork.PrepareSQLStringForInsertToDB();
-            if (!string.IsNullOrEmpty(stringSQL))
+            if (InputOK())
+            {
+                var stringSQL = homeWork.PrepareSQLStringForInsertToDB();
                 ExecuteDBOperations(stringSQL, 0);
+            }
         }
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            var stringSQL = homeWork.PrepareSQLStringForUpdateToDB();
-            if (!string.IsNullOrEmpty(stringSQL))
+            if (InputOK())
+            {
+                var stringSQL = homeWork.PrepareSQLStringForUpdateToDB();
                 ExecuteDBOperations(stringSQL, 1);
+            }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -187,6 +191,37 @@ namespace StudentLife
 
                 col.ElementStyle = style;
             }
+        }
+
+        private bool InputOK()
+        {
+
+            if (String.IsNullOrEmpty(Subject_ComboBox.Text))
+            {
+                MessageBox.Show("Subject missing");
+                return false;
+            }
+            if (String.IsNullOrEmpty(Homework_TextBox.Text))
+            {
+                MessageBox.Show("Homework missing");
+                return false;
+            }
+            if (StartDate_DatePicker.Text == null)
+            {
+                MessageBox.Show("Start Date missing");
+                return false;
+            }
+            if (EndDate_DatePicker.Text != null)
+            {
+                var startDateTime = DateTime.ParseExact(StartDate_DatePicker.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                var endDateTime = DateTime.ParseExact(EndDate_DatePicker.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                if (endDateTime < startDateTime)
+                {
+                    MessageBox.Show("End Date must be greater than Start Date");
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

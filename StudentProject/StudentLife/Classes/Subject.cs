@@ -19,26 +19,21 @@ namespace StudentLife.Classes
 
         public string PrepareSQLStringForUpdateToDB()
         {
-            var queryString = "";
-            if (!String.IsNullOrEmpty(Description))
-                queryString = $"update Subjects set Description = '{Description}' " +
-                                 $"where Id = {Id}";
-            return queryString;
+            return $"update Subjects set Description = '{Description}' " +
+                $"where Id = {Id}";
         }
 
         public string PrepareSQLStringForDeleteToDB()
         {
             return "delete from Subjects " +
-                                 $"where Id = {Id}";
+                 $"where Id = {Id}";
         }
 
         public string PrepareSQLStringForInsertToDB()
         {
-            var queryString = "";
-            if (!String.IsNullOrEmpty(Description))
-                queryString = "insert into Subjects (Description) " +
-                          $"values ('{Description}')";
-            return queryString;
+
+            return "insert into Subjects (Description) " +
+                $"values ('{Description}')";
         }
 
         public string PrepareSQLForDataManagementGrid()

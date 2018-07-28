@@ -35,18 +35,20 @@ namespace StudentLife
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-
-            var stringSQL = classRoomTask.PrepareSQLStringForInsertToDB();
-            if (!string.IsNullOrEmpty(stringSQL))
+            if (InputOK())
+            {
+                var stringSQL = classRoomTask.PrepareSQLStringForInsertToDB();
                 ExecuteDBOperations(stringSQL, 0);
-
+            }
         }
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            var stringSQL = classRoomTask.PrepareSQLStringForUpdateToDB();
-            if (!string.IsNullOrEmpty(stringSQL))
+            if (InputOK())
+            {
+                var stringSQL = classRoomTask.PrepareSQLStringForUpdateToDB();
                 ExecuteDBOperations(stringSQL, 1);
+            }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -183,6 +185,26 @@ namespace StudentLife
                     Subject_ComboBox.ItemsSource = comboItems;
                 }
             }
+        }
+
+        public bool InputOK()
+        {
+            if (String.IsNullOrEmpty(Subject_ComboBox.Text))
+            {
+                MessageBox.Show("Subject missing");
+                return false;
+            }
+            if (String.IsNullOrEmpty(Type_ComboBox.Text))
+            {
+                MessageBox.Show("Task Type missing");
+                return false;
+            }
+            if (When_DatePicker.Text == null)
+            {
+                MessageBox.Show("When Date missing");
+                return false;
+            }
+            return true;
         }
     }
 }

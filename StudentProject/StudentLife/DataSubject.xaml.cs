@@ -35,16 +35,20 @@ namespace StudentLife
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            var stringSQL = subject.PrepareSQLStringForInsertToDB();
-            if (!string.IsNullOrEmpty(stringSQL))
+            if (InputOK())
+            {
+                var stringSQL = subject.PrepareSQLStringForInsertToDB();
                 ExecuteDBOperations(stringSQL, 0);
+            }
         }
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            var stringSQL = subject.PrepareSQLStringForUpdateToDB();
-            if (!string.IsNullOrEmpty(stringSQL))
+            if (InputOK())
+            {
+                var stringSQL = subject.PrepareSQLStringForUpdateToDB();
                 ExecuteDBOperations(stringSQL, 1);
+            }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -158,6 +162,19 @@ namespace StudentLife
                     Display_DataGrid.ItemsSource = dt.DefaultView;
 
                 }
+            }
+        }
+
+        private bool InputOK()
+        {
+            if (!String.IsNullOrEmpty(Description_TextBox.Text))
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Description missing");
+                return false;
             }
         }
     }

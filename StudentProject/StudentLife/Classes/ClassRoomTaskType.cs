@@ -15,27 +15,20 @@ namespace StudentLife.Classes
 
         public string PrepareSQLStringForUpdateToDB()
         {
-
-            var queryString = "";
-            if (!String.IsNullOrEmpty(Description))
-                queryString = $"update ClassRoomTaskTypes set Description = '{Description}' " +
-                                 $"where Id = {Id}";
-            return queryString;
+            return $"update ClassRoomTaskTypes set Description = '{Description}' " +
+                        $"where Id = {Id}";
         }
 
         public string PrepareSQLStringForDeleteToDB()
         {
             return "delete from ClassRoomTaskTypes " +
-                                 $"where Id = {Id}";
+                        $"where Id = {Id}";
         }
 
         public string PrepareSQLStringForInsertToDB()
         {
-            var queryString = "";
-            if (!String.IsNullOrEmpty(Description))
-                queryString = "insert into ClassRoomTaskTypes (Description) " +
+            return "insert into ClassRoomTaskTypes (Description) " +
                           $"values ('{Description}')";
-            return queryString;
         }
 
         public string PrepareSQLForDataManagementGrid()

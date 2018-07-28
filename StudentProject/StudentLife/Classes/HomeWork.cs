@@ -20,46 +20,35 @@ namespace StudentLife.Classes
 
         public string PrepareSQLStringForUpdateToDB()
         {
-
-            var queryString = "";
-            if (!String.IsNullOrEmpty(Description) && !String.IsNullOrEmpty(StartDate))
-            {
-                string StartDateForSqlString =
-                "'" + (StartDate.Substring(6, 4) + "-" + StartDate.Substring(3, 2) + "-" + StartDate.Substring(0, 2) + " 00:00:00'");
-                string EndDateForSqlString =
-                    !String.IsNullOrEmpty(EndDate)
-                    ? "'" + (EndDate.Substring(6, 4) + "-" + EndDate.Substring(3, 2) + "-" + EndDate.Substring(0, 2) + " 00:00:00'")
-                    : "null";
-                queryString = $"update HomeWorks set Description = '{Description}', " +
-                        $"StartDate = {StartDateForSqlString}, EndDate = {EndDateForSqlString}, " +
-                        $"SubjectId = (select Id from Subjects where Description = '{SubjectDescription}') " +
-                        $"where Id = {Id}";
-            }
-            return queryString;
+            string StartDateForSqlString =
+            "'" + (StartDate.Substring(6, 4) + "-" + StartDate.Substring(3, 2) + "-" + StartDate.Substring(0, 2) + " 00:00:00'");
+            string EndDateForSqlString =
+                !String.IsNullOrEmpty(EndDate)
+                ? "'" + (EndDate.Substring(6, 4) + "-" + EndDate.Substring(3, 2) + "-" + EndDate.Substring(0, 2) + " 00:00:00'")
+                : "null";
+            return $"update HomeWorks set Description = '{Description}', " +
+                    $"StartDate = {StartDateForSqlString}, EndDate = {EndDateForSqlString}, " +
+                    $"SubjectId = (select Id from Subjects where Description = '{SubjectDescription}') " +
+                    $"where Id = {Id}";
         }
 
         public string PrepareSQLStringForDeleteToDB()
         {
             return "delete from HomeWorks " +
-                                 $"where Id = {Id}";
+                        $"where Id = {Id}";
         }
 
         public string PrepareSQLStringForInsertToDB()
         {
-            var queryString = "";
-            if (!String.IsNullOrEmpty(Description) && !String.IsNullOrEmpty(StartDate))
-            {
-                string StartDateForSqlString =
+            string StartDateForSqlString =
                 "'" + (StartDate.Substring(6, 4) + "-" + StartDate.Substring(3, 2) + "-" + StartDate.Substring(0, 2) + " 00:00:00'");
-                string EndDateForSqlString =
-                    !String.IsNullOrEmpty(EndDate)
-                    ? "'" + (EndDate.Substring(6, 4) + "-" + EndDate.Substring(3, 2) + "-" + EndDate.Substring(0, 2) + " 00:00:00'")
-                    : "null";
-                queryString = "insert into Homeworks (Description, StartDate, EndDate, SubjectId) " +
-                          $"values ('{Description}', {StartDateForSqlString} , {EndDateForSqlString}, " +
-                          $"(select Id from Subjects where Description = '{SubjectDescription}')) ";
-            }
-            return queryString;
+            string EndDateForSqlString =
+                !String.IsNullOrEmpty(EndDate)
+                ? "'" + (EndDate.Substring(6, 4) + "-" + EndDate.Substring(3, 2) + "-" + EndDate.Substring(0, 2) + " 00:00:00'")
+                : "null";
+            return "insert into Homeworks (Description, StartDate, EndDate, SubjectId) " +
+                        $"values ('{Description}', {StartDateForSqlString} , {EndDateForSqlString}, " +
+                        $"(select Id from Subjects where Description = '{SubjectDescription}')) ";
         }
 
         public string PrepareSQLForDataManagementGrid()

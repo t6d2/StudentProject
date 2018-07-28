@@ -30,5 +30,31 @@ namespace StudentLife
             gdc.LoadDataGrid(ToDoTasks_DataGrid, new OperatorsSQL(">=", "is", "or"));
             gdc.LoadDataGrid(DoneTasks_DataGrid, new OperatorsSQL("<", "is not", "and"));
         }
+
+        private void ToDoTasks_DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            MouseScrollEnable(sender, e);
+        }
+
+        private void DoneTasks_DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            MouseScrollEnable(sender, e);
+        }
+
+        private static void MouseScrollEnable(object sender, MouseWheelEventArgs e)
+        {
+            if (!e.Handled)
+            {
+                e.Handled = true;
+                var eventArg = new MouseWheelEventArgs(
+                    e.MouseDevice, e.Timestamp, e.Delta)
+                {
+                    RoutedEvent = UIElement.MouseWheelEvent,
+                    Source = sender
+                };
+                var parent = ((Control)sender).Parent as UIElement;
+                parent.RaiseEvent(eventArg);
+            }
+        }
     }
 }

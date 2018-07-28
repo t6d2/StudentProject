@@ -72,7 +72,8 @@
         <ScrollViewer Grid.Row="3" Grid.Column="1"  Grid.ColumnSpan="2" >
             <StackPanel  Orientation="Vertical"  >
                 <DataGrid x:Name="ToDoTasks_DataGrid" AutoGenerateColumns="False" IsReadOnly="True"
-                                VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5" >
+                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5"
+                          PreviewMouseWheel="ToDoTasks_DataGrid_PreviewMouseWheel">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Activity" 
                                             Binding="{Binding Description}" ElementStyle="{StaticResource WrapText}"
@@ -97,7 +98,8 @@
         <ScrollViewer Grid.Row="5" Grid.Column="1"  Grid.ColumnSpan="2" >
             <StackPanel  Orientation="Vertical"  >
                 <DataGrid x:Name="DoneTasks_DataGrid" AutoGenerateColumns="False" IsReadOnly="True"
-                              VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5">
+                        VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5"
+                        PreviewMouseWheel="DoneTasks_DataGrid_PreviewMouseWheel">
                     <DataGrid.Columns >
                         <DataGridTextColumn Header="Activity" Binding="{Binding Description}" ElementStyle="{StaticResource WrapText}"
                                             Width="*" MinWidth="150"/>
