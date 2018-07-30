@@ -12,6 +12,7 @@ namespace StudentLife.Classes
     {
         public string Id { get; set; }
         public string WhenDate { get; set; }
+        public DateTime When_Date { get; set; }
         public string Vote { get; set; }
         public string ClassRoomTaskType { get; set; }
         public string SubjectDescritpion { get; set; }

@@ -28,9 +28,9 @@ namespace StudentLife
 
         public DataClassRoomTask(DbConnection dbc)
         {
+            dbConnection = dbc;
             InitializeComponent();
             classRoomTask = new ClassRoomTask();
-            dbConnection = dbc;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)

@@ -18,9 +18,7 @@ using StudentLife.Classes;
 
 namespace StudentLife
 {
-    /// <summary>
-    /// Logica di interazione per DataSubject.xaml
-    /// </summary>
+
     public partial class DataSubject : UserControl
     {
         private Subject subject;
@@ -28,9 +26,9 @@ namespace StudentLife
 
         public DataSubject(DbConnection dbc)
         {
+            dbConnection = dbc;
             InitializeComponent();
             subject = new Subject();
-            dbConnection = dbc;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)

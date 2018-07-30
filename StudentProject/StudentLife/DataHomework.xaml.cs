@@ -19,9 +19,7 @@ using System.Globalization;
 
 namespace StudentLife
 {
-    /// <summary>
-    /// Logica di interazione per DataHomework.xaml
-    /// </summary>
+
     public partial class DataHomework : UserControl
     {
         private HomeWork homeWork;
@@ -29,9 +27,9 @@ namespace StudentLife
 
         public DataHomework(DbConnection dbc)
         {
+            dbConnection = dbc;
             InitializeComponent();
             homeWork = new HomeWork();
-            dbConnection = dbc;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)

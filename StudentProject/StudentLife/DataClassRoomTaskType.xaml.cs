@@ -18,9 +18,7 @@ using StudentLife.Classes;
 
 namespace StudentLife
 {
-    /// <summary>
-    /// Logica di interazione per DataClassRoomTaskType.xaml
-    /// </summary>
+
     public partial class DataClassRoomTaskType : UserControl
     {
         private ClassRoomTaskType classRoomTaskType;
@@ -28,9 +26,9 @@ namespace StudentLife
 
         public DataClassRoomTaskType(DbConnection dbc)
         {
+            dbConnection = dbc;
             InitializeComponent();
             classRoomTaskType = new ClassRoomTaskType();
-            dbConnection = dbc;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)

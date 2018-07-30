@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:StudentLife"
         mc:Ignorable="d"  FontSize="18" FontFamily="Segoe UI Light"
         WindowStartupLocation="CenterScreen" Background="AntiqueWhite"
-         Title="Student Life" Height="450" Width="800" Margin="0" >
-    
+         Title="Student Life" Height="450" Width="800" Margin="0" Closing="Window_Closing" >
+
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="10"/>
@@ -68,7 +68,10 @@
                         <MenuItem Header="ClassTask Types" Click="ClassTask_Click"/>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Name="Display_MenuItem" Header="Display Activities" Click="Display_Click"/>
+                <MenuItem Name="Display_MenuItem" Header="Display...">
+                    <MenuItem Name="AllActivities_MenuItem" Header="All Activities" Click="Activities_Click"/>
+                    <MenuItem Name="ActivitiesBySubject_MenuItem" Header="Activities by Subject" Click="MaterialActivities_Click"/>
+                </MenuItem>
                 <MenuItem Header="Close" Click="Close_Click"  HorizontalAlignment="Right" Margin="0,0,10,0">
                 </MenuItem>
             </Menu>

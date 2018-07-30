@@ -69,6 +69,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DataDisplayByMaterial.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DataHomework.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -100,6 +104,9 @@
     </Compile>
     <Compile Include="DataDisplay.xaml.cs">
       <DependentUpon>DataDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataDisplayByMaterial.xaml.cs">
+      <DependentUpon>DataDisplayByMaterial.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataHomework.xaml.cs">
       <DependentUpon>DataHomework.xaml</DependentUpon>

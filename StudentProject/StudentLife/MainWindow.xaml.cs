@@ -28,12 +28,12 @@ namespace StudentLife
 
             InitializeData();
             this.contentMainWindow.Content = new DataDisplay(dbc);
-            Display_MenuItem.Visibility = Visibility.Hidden;
+            AllActivities_MenuItem.Visibility = Visibility.Collapsed;
+            ActivitiesBySubject_MenuItem.Visibility = Visibility.Visible;
         }
 
         private void InitializeData()
         {
-
             dbc = new DbConnection();
         }
 
@@ -63,17 +63,9 @@ namespace StudentLife
             BaseOperationsForDataManagement(textHeader);
         }
 
-        private void Display_Click(object sender, RoutedEventArgs e)
-        {
-            this.contentMainWindow.Content = new DataDisplay(dbc);
-            Display_MenuItem.Visibility = Visibility.Hidden;
-        }
-
         private void Close_Click(object sender, RoutedEventArgs e)
         {
-            if (dbc.SqlConn != null)
-                dbc.SqlConn.Close();
-
+            
             Application.Current.Shutdown();
         }
 
@@ -95,8 +87,28 @@ namespace StudentLife
                     break;
 
             }
-            Display_MenuItem.Visibility = Visibility.Visible;
+            AllActivities_MenuItem.Visibility = Visibility.Visible;
+            ActivitiesBySubject_MenuItem.Visibility = Visibility.Visible;
+        }
 
+        private void Activities_Click(object sender, RoutedEventArgs e)
+        {
+            this.contentMainWindow.Content = new DataDisplay(dbc);
+            AllActivities_MenuItem.Visibility = Visibility.Collapsed;
+            ActivitiesBySubject_MenuItem.Visibility = Visibility.Visible;
+        }
+
+        private void MaterialActivities_Click(object sender, RoutedEventArgs e)
+        {
+            this.contentMainWindow.Content = new DataDisplayByMaterial(dbc);
+            AllActivities_MenuItem.Visibility = Visibility.Visible;
+            ActivitiesBySubject_MenuItem.Visibility = Visibility.Collapsed;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (dbc.SqlConn != null)
+                dbc.SqlConn.Close();
         }
     }
 }
