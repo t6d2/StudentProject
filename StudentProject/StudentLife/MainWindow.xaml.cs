@@ -39,54 +39,28 @@ namespace StudentLife
 
         private void Subjects_Click(object sender, RoutedEventArgs e)
         {
-            MenuItemOperations(sender);
+            MenuItemOperations(sender, dbc => new DataSubject(dbc));
         }
         private void ClassRoomTasks_Click(object sender, RoutedEventArgs e)
         {
-            MenuItemOperations(sender);
+            MenuItemOperations(sender, dbc => new DataClassRoomTask(dbc));
         }
 
         private void Homework_Click(object sender, RoutedEventArgs e)
         {
-            MenuItemOperations(sender);
+            MenuItemOperations(sender, dbc => new DataHomework(dbc));
         }
 
         private void ClassTask_Click(object sender, RoutedEventArgs e)
         {
-            MenuItemOperations(sender);
+            MenuItemOperations(sender, dbc => new DataClassRoomTaskType(dbc));
         }
 
-        private void MenuItemOperations(object sender)
+        private void MenuItemOperations(object sender, Func<DbConnection, UserControl> ucCreator)
         {
             var clickedMenuItem = sender as MenuItem;
             var textHeader = clickedMenuItem.Header.ToString();
-            BaseOperationsForDataManagement(textHeader);
-        }
-
-        private void Close_Click(object sender, RoutedEventArgs e)
-        {
-            
-            Application.Current.Shutdown();
-        }
-
-        private void BaseOperationsForDataManagement(string menuItemName)
-        {
-            switch (menuItemName)
-            {
-                case "Subjects":
-                    this.contentMainWindow.Content = new DataSubject(dbc);
-                    break;
-                case "ClassRoomTasks":
-                    this.contentMainWindow.Content = new DataClassRoomTask(dbc);
-                    break;
-                case "HomeWorks":
-                    this.contentMainWindow.Content = new DataHomework(dbc);
-                    break;
-                case "ClassTask Types":
-                    this.contentMainWindow.Content = new DataClassRoomTaskType(dbc);
-                    break;
-
-            }
+            contentMainWindow.Content = ucCreator(dbc);
             AllActivities_MenuItem.Visibility = Visibility.Visible;
             ActivitiesBySubject_MenuItem.Visibility = Visibility.Visible;
         }

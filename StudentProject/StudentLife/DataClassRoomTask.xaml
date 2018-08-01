@@ -118,9 +118,10 @@
                                   Margin="5,10,5,5"/>
                         <ComboBox x:Name="Type_ComboBox" Text="{Binding ClassRoomTaskType, Mode=TwoWay}"
                                   Margin="5,10,5,5"/>
+                        
                         <DatePicker x:Name ="When_DatePicker" Text="{Binding WhenDate, Mode=TwoWay}" 
-                                    Margin="5,5"/>
-                        <TextBox x:Name="Vote_TextBox" Text="{Binding Vote, Mode=TwoWay}" 
+                                    Margin="5,5" Height=" 30"/>
+                        <TextBox x:Name="Vote_TextBox" Text="{Binding Vote, Mode=TwoWay}" MaxLength="2" 
                                  Margin="5,3" Width="20"
                                  HorizontalAlignment="Left"/>
                     </StackPanel>

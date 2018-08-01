@@ -59,6 +59,7 @@ namespace StudentLife
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             ResetAll();
+            Display_DataGrid.SelectedIndex = -1;
         }
 
         private void ResetAll()

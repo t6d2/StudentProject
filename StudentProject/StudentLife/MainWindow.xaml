@@ -41,18 +41,16 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="*" />
-
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="5" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="5" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*"/>
             <RowDefinition Height="5" />
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="6" 
+        <DockPanel Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="4" 
                    Height="25" HorizontalAlignment="Stretch" Margin="0,0,5,0">
             <Menu Height="20" Background="#FFD8ADC7" >
                 <Menu.ItemsPanel>
@@ -60,24 +58,23 @@
                         <DockPanel HorizontalAlignment="Stretch"/>
                     </ItemsPanelTemplate>
                 </Menu.ItemsPanel>
-                <MenuItem Header="Management Data..." Margin="10,0,0,0">
+                <MenuItem Header="Management Data" Margin="10,0,0,0">
                     <MenuItem Header="Subjects"  Click="Subjects_Click"/>
                     <MenuItem Header="ClassRoomTasks" Click="ClassRoomTasks_Click"/>
                     <MenuItem Header="HomeWorks" Click="Homework_Click"/>
-                    <MenuItem Header="Others...">
+                    <MenuItem Header="Others">
                         <MenuItem Header="ClassTask Types" Click="ClassTask_Click"/>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Name="Display_MenuItem" Header="Display...">
+                <MenuItem Name="Display_MenuItem" Header="Display" HorizontalAlignment="Left">
                     <MenuItem Name="AllActivities_MenuItem" Header="All Activities" Click="Activities_Click"/>
                     <MenuItem Name="ActivitiesBySubject_MenuItem" Header="Activities by Subject" Click="MaterialActivities_Click"/>
                 </MenuItem>
-                <MenuItem Header="Close" Click="Close_Click"  HorizontalAlignment="Right" Margin="0,0,10,0">
-                </MenuItem>
+                
             </Menu>
         </DockPanel>
 
-        <ContentControl x:Name="contentMainWindow" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="5"></ContentControl>
+        <ContentControl x:Name="contentMainWindow" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="5"></ContentControl>
 
     </Grid>
 

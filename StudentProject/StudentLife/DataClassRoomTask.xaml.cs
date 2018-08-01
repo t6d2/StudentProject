@@ -61,6 +61,7 @@ namespace StudentLife
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             ResetAll();
+            Display_DataGrid.SelectedIndex = -1;
         }
 
         private void ResetAll()
@@ -202,6 +203,31 @@ namespace StudentLife
             if (When_DatePicker.Text == null)
             {
                 MessageBox.Show("When Date missing");
+                return false;
+            }
+            bool voteInputOk = true;
+            if (!String.IsNullOrEmpty(Vote_TextBox.Text))
+            {
+                bool isVoteNumeric = uint.TryParse(Vote_TextBox.Text, out uint uintVote);
+                if (isVoteNumeric)
+                {
+                    if (uintVote > 10)
+                    {
+                        voteInputOk = false;
+                    }
+                }
+                else
+                {
+                    voteInputOk = false;
+                }
+            }
+            else
+            {
+                Vote_TextBox.Text = null;
+            }
+            if (!voteInputOk)
+            {
+                MessageBox.Show("Vote must be empty or included between 0 and 10");
                 return false;
             }
             return true;

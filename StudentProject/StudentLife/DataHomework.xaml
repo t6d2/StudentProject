@@ -107,10 +107,10 @@
                     </StackPanel.Resources>
                     <StackPanel Orientation="Vertical" VerticalAlignment="Top">
                         <Label Content="Id"></Label>
-                        <Label Content="Subject"></Label>
+                        <Label Content="Subject" Margin="5,0"></Label>
                         <Label Content="Homework" Margin="5,10"></Label>
-                        <Label Content="Start Date" Margin="5,10"></Label>
-                        <Label Content="End Date"  Margin="5,10"></Label>
+                        <Label Content="Start Date" Margin="5,18,0,5"></Label>
+                        <Label Content="End Date"  Margin="5,5"></Label>
 
                     </StackPanel>
 
@@ -126,9 +126,9 @@
                                  Height="50" MaxWidth="190" Margin="5,5">
                         </TextBox>
                         <DatePicker x:Name ="StartDate_DatePicker" Text="{Binding StartDate, Mode=TwoWay}" 
-                                    Margin="5,3"/>
+                                    Margin="5,3" Height="30"/>
                         <DatePicker x:Name ="EndDate_DatePicker" Text="{Binding EndDate, Mode=TwoWay}" 
-                                    Margin="5,3"/>
+                                    Margin="5,3" Height="30"/>
                     </StackPanel>
 
                 </StackPanel>
@@ -157,8 +157,7 @@
             <DataGrid x:Name="Display_DataGrid" IsReadOnly="True" 
                       Grid.Column="4" Grid.Row="2" Grid.RowSpan="8" Grid.ColumnSpan="3" 
                       SelectionChanged="Display_DataGrid_SelectionChanged"
-                      AutoGeneratingColumn="Display_DataGrid_AutoGeneratingColumn"
-                      MaxColumnWidth="235">
+                      AutoGeneratingColumn="Display_DataGrid_AutoGeneratingColumn">
             </DataGrid>
 
         </Grid>
