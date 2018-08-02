@@ -38,7 +38,7 @@ namespace StudentLife
             if (InputOK())
             {
                 var stringSQL = classRoomTask.PrepareSQLStringForInsertToDB();
-                ExecuteDBOperations(stringSQL, 0);
+                ExecuteDBOperations(stringSQL, "Row Inserted!");
             }
         }
 
@@ -47,7 +47,7 @@ namespace StudentLife
             if (InputOK())
             {
                 var stringSQL = classRoomTask.PrepareSQLStringForUpdateToDB();
-                ExecuteDBOperations(stringSQL, 1);
+                ExecuteDBOperations(stringSQL, "Row Updated!");
             }
         }
 
@@ -55,7 +55,7 @@ namespace StudentLife
         {
             var stringSQL = classRoomTask.PrepareSQLStringForDeleteToDB();
             if (!string.IsNullOrEmpty(stringSQL))
-                ExecuteDBOperations(stringSQL, 2);
+                ExecuteDBOperations(stringSQL, "Row Deleted!");
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
@@ -121,24 +121,11 @@ namespace StudentLife
             return comboItems;
         }
 
-        private void ExecuteDBOperations(string stringSQL, int state)
+        private void ExecuteDBOperations(string stringSQL, string msg)
         {
-            string msg = "";
             dbConnection.Comm.CommandText = stringSQL;
             dbConnection.Comm.CommandType = CommandType.Text;
             dbConnection.Comm.Parameters.Clear();
-            switch (state)
-            {
-                case 0:
-                    msg = "Row Inserted!";
-                    break;
-                case 1:
-                    msg = "Row Updated!";
-                    break;
-                case 2:
-                    msg = "Row Deleted!";
-                    break;
-            }
             try
             {
                 int n = dbConnection.Comm.ExecuteNonQuery();
@@ -200,11 +187,12 @@ namespace StudentLife
                 MessageBox.Show("Task Type missing");
                 return false;
             }
-            if (When_DatePicker.Text == null)
+            if (String.IsNullOrEmpty(When_DatePicker.Text))
             {
                 MessageBox.Show("When Date missing");
                 return false;
             }
+
             bool voteInputOk = true;
             if (!String.IsNullOrEmpty(Vote_TextBox.Text))
             {

@@ -73,14 +73,14 @@
                 <RowDefinition Height="5" />
             </Grid.RowDefinitions>
 
-            <StackPanel x:Name="ClassRoomTasks_StackPanel" Grid.Column="1" Grid.Row="2"
-                        Grid.ColumnSpan="3" Grid.RowSpan="6" Orientation="Vertical"
-                        Visibility="Visible">
-
-                <StackPanel  HorizontalAlignment="Center" Margin="5">
-                    <Label Name="CRT_Title"  FontSize="24" 
+            <StackPanel  HorizontalAlignment="Center"
+                         Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="6">
+                <Label Name="CRT_Title"  FontSize="24" 
                     Content="ClassRoom Tasks" FontFamily="Segoe UI Black"/>
-                </StackPanel>
+            </StackPanel>
+
+            <StackPanel x:Name="Subjects_StackPanel" Grid.Column="1" Grid.Row="3"
+                        Grid.ColumnSpan="3" Grid.RowSpan="6" Orientation="Vertical">
 
                 <StackPanel  Orientation="Horizontal" Margin="5" >
                     <StackPanel.Resources>
@@ -138,11 +138,12 @@
                     Click="AddButton_Click"></Button>
                     <Button x:Name="UpdateButton" Content="Update" 
                     Click="UpdateButton_Click" IsEnabled="False"></Button>
-                    <Button x:Name="DeleteButton" Content="Delete" 
-                    Click="DeleteButton_Click" IsEnabled="False"></Button>
+
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button x:Name="DeleteButton" Content="Delete" 
+                    Click="DeleteButton_Click" IsEnabled="False"></Button>
                     <Button x:Name="ResetButton" Content="Reset"
                      Click="ResetButton_Click" FontFamily="Segoe UI Black" ></Button>
                 </StackPanel>
@@ -150,7 +151,7 @@
             </StackPanel>
 
             <DataGrid x:Name="Display_DataGrid" IsReadOnly="True" 
-                      Grid.Column="4" Grid.Row="2" Grid.RowSpan="8" Grid.ColumnSpan="3" 
+                      Grid.Column="4" Grid.Row="3" Grid.RowSpan="8" Grid.ColumnSpan="3" 
                       SelectionChanged="Display_DataGrid_SelectionChanged">
             </DataGrid>
 
