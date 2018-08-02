@@ -154,7 +154,7 @@
 
             </StackPanel>
 
-            <DataGrid x:Name="Display_DataGrid" IsReadOnly="True" 
+            <DataGrid x:Name="Display_DataGrid" IsReadOnly="True" Margin="0,0,0,5"
                       Grid.Column="4" Grid.Row="3" Grid.RowSpan="8" Grid.ColumnSpan="3" 
                       SelectionChanged="Display_DataGrid_SelectionChanged"
                       AutoGeneratingColumn="Display_DataGrid_AutoGeneratingColumn">
