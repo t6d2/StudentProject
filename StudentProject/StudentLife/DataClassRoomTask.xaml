@@ -111,7 +111,7 @@
 
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="200">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="220">
                         <TextBlock x:Name="Id_TextBlock" Text="{Binding Id, Mode=TwoWay}" FontWeight="SemiBold"  
                                 Margin="5,10"></TextBlock>
                         <ComboBox x:Name="Subject_ComboBox" Text="{Binding SubjectDescritpion, Mode=TwoWay}"

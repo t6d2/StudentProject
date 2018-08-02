@@ -113,7 +113,7 @@
 
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="200">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="220">
                         <TextBlock x:Name="Id_TextBlock" Text="{Binding Id, Mode=TwoWay}"
                                    FontWeight="SemiBold"  
                             Height="25" Margin="5,5"></TextBlock>
@@ -122,7 +122,7 @@
                         <TextBox x:Name="Homework_TextBox" Text="{Binding Description, Mode=TwoWay}" 
                                  AcceptsReturn="True" AcceptsTab="True" 
                                  AllowDrop="True" TextWrapping="Wrap"
-                                 Height="50" MaxWidth="190" Margin="5,5">
+                                 Height="50" MaxWidth="210" Margin="5,5">
                         </TextBox>
                         <DatePicker x:Name ="StartDate_DatePicker" Text="{Binding StartDate, Mode=TwoWay}" 
                                     Margin="5,3" Height="30"/>

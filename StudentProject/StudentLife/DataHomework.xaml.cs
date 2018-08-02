@@ -24,12 +24,14 @@ namespace StudentLife
     {
         private HomeWork homeWork;
         private DbConnection dbConnection;
+        private SqlConnection _SqlConn { get; set; }
+        private SqlCommand _Comm { get; set; }
 
-        public DataHomework(DbConnection dbc)
+        public DataHomework()
         {
-            dbConnection = dbc;
             InitializeComponent();
             homeWork = new HomeWork();
+            dbConnection = new DbConnection();
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -117,25 +119,32 @@ namespace StudentLife
 
         private void ExecuteDBOperations(string stringSQL, string msg)
         {
-            dbConnection.Comm.CommandText = stringSQL;
-            dbConnection.Comm.CommandType = CommandType.Text;
-            dbConnection.Comm.Parameters.Clear();
-            try
+            var dbConnection = new DbConnection();
+            using (_SqlConn = new SqlConnection(dbConnection.PrepareStringConnection()))
             {
-                int n = dbConnection.Comm.ExecuteNonQuery();
-                if (n > 0)
+                _Comm = _SqlConn.CreateCommand();
+                _SqlConn.Open();
+
+                _Comm.CommandText = stringSQL;
+                _Comm.CommandType = CommandType.Text;
+                _Comm.Parameters.Clear();
+                try
                 {
-                    MessageBox.Show(msg);
-                    LoadDataManagementGrid(homeWork.PrepareSQLForDataManagementGrid());
-                    ResetAll();
+                    int n = _Comm.ExecuteNonQuery();
+                    if (n > 0)
+                    {
+                        MessageBox.Show(msg);
+                        LoadDataManagementGrid(homeWork.PrepareSQLForDataManagementGrid());
+                        ResetAll();
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("UNIQUE KEY constraint"))
-                    MessageBox.Show("Row already existent");
-                else
-                    MessageBox.Show(ex.Message);
+                catch (Exception ex)
+                {
+                    if (ex.Message.Contains("UNIQUE KEY constraint"))
+                        MessageBox.Show("Row already existent");
+                    else
+                        MessageBox.Show(ex.Message);
+                }
             }
         }
 
@@ -147,21 +156,27 @@ namespace StudentLife
 
         private void LoadDataManagementGrid(string stringSQL)
         {
-            dbConnection.Comm.CommandText = stringSQL;
-            dbConnection.Comm.CommandType = CommandType.Text;
-
-            using (SqlDataReader reader = dbConnection.Comm.ExecuteReader())
+            var dbConnection = new DbConnection();
+            using (_SqlConn = new SqlConnection(dbConnection.PrepareStringConnection()))
             {
-                if (reader.HasRows)
+                _Comm = _SqlConn.CreateCommand();
+                _SqlConn.Open();
+
+                _Comm.CommandText = stringSQL;
+                _Comm.CommandType = CommandType.Text;
+
+                using (SqlDataReader reader = _Comm.ExecuteReader())
                 {
-                    DataTable dt = new DataTable();
-                    dt.Load(reader);
-                    Display_DataGrid.ItemsSource = dt.DefaultView;
+                    if (reader.HasRows)
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Load(reader);
+                        Display_DataGrid.ItemsSource = dt.DefaultView;
 
-                    Subject_ComboBox.ItemsSource = null;
-                    var comboItems = LoadComboBox(Display_DataGrid, 4);
-                    Subject_ComboBox.ItemsSource = comboItems;
-
+                        Subject_ComboBox.ItemsSource = null;
+                        var comboItems = LoadComboBox(Display_DataGrid, 4);
+                        Subject_ComboBox.ItemsSource = comboItems;
+                    }
                 }
             }
         }

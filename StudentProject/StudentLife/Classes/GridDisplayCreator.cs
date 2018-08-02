@@ -12,47 +12,49 @@ namespace StudentLife.Classes
 {
     public class GridDisplayCreator
     {
-        private DbConnection Dbc { get; set; }
-
-        public GridDisplayCreator(DbConnection dbc)
-        {
-
-            Dbc = dbc;
-        }
+        private DbConnection _DbConnection { get; set; }
+        private SqlConnection _SqlConn { get; set; }
+        private SqlCommand _Comm { get; set; }
 
         public void LoadDataGrid(DataGrid dg, OperatorsSQL op)
         {
 
-            string referenceDate = "2018-04-01";    // data di riferimento fissa al 2018-04-01
-            Dbc.Comm.CommandText = "select h.Description, CONVERT(date, h.StartDate), CONVERT(date, h.EndDate), s.Description" +
-                                    " from Homeworks as h " +
-                                    "join Subjects as s on s.Id = h.SubjectId " +
-                                    $"where (StartDate {op.MoreLessOperator} '{referenceDate}') " +
-                                    $"{op.OrAndOperator} (h.EndDate {op.NullOperator} Null) " +
-                                    "order by h.StartDate ";
-
-            Dbc.Comm.CommandType = CommandType.Text;
+            var dbConnection = new DbConnection();
             var homeWorkList = new List<HomeWork>();
-            using (SqlDataReader reader = Dbc.Comm.ExecuteReader())
+            using (_SqlConn = new SqlConnection(dbConnection.PrepareStringConnection()))
             {
-                if (reader.HasRows)
+                _Comm = _SqlConn.CreateCommand();
+                _SqlConn.Open();
+                string referenceDate = "2018-04-01";    // data di riferimento fissa al 2018-04-01
+                _Comm.CommandText = "select h.Description, CONVERT(date, h.StartDate), CONVERT(date, h.EndDate), s.Description" +
+                                        " from Homeworks as h " +
+                                        "join Subjects as s on s.Id = h.SubjectId " +
+                                        $"where (StartDate {op.MoreLessOperator} '{referenceDate}') " +
+                                        $"{op.OrAndOperator} (h.EndDate {op.NullOperator} Null) " +
+                                        "order by h.StartDate ";
+
+                _Comm.CommandType = CommandType.Text;
+                using (SqlDataReader reader = _Comm.ExecuteReader())
                 {
-                    while (reader.Read())
+                    if (reader.HasRows)
                     {
-                        HomeWork hw = new HomeWork
+                        while (reader.Read())
                         {
-                            Description = reader.GetString(0),
-                            Start_Date = reader.GetDateTime(1),
-                            End_Date = reader.IsDBNull(2)
-                            ? (DateTime?)null
-                            : reader.GetDateTime(2),
-                            SubjectDescription = reader.GetString(3)
-                        };
-                        hw.StartDate = hw.Start_Date.ToString("dd/MM/yyyy");
-                        hw.EndDate = hw.End_Date == null ? "" : hw.End_Date.Value.ToString("dd/MM/yyyy");
-                        homeWorkList.Add(hw);
+                            HomeWork hw = new HomeWork
+                            {
+                                Description = reader.GetString(0),
+                                Start_Date = reader.GetDateTime(1),
+                                End_Date = reader.IsDBNull(2)
+                                ? (DateTime?)null
+                                : reader.GetDateTime(2),
+                                SubjectDescription = reader.GetString(3)
+                            };
+                            hw.StartDate = hw.Start_Date.ToString("dd/MM/yyyy");
+                            hw.EndDate = hw.End_Date == null ? "" : hw.End_Date.Value.ToString("dd/MM/yyyy");
+                            homeWorkList.Add(hw);
+                        }
+                        dg.ItemsSource = homeWorkList;
                     }
-                    dg.ItemsSource = homeWorkList;
                 }
             }
         }

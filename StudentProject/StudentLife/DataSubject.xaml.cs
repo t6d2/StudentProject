@@ -21,14 +21,17 @@ namespace StudentLife
 
     public partial class DataSubject : UserControl
     {
-        private Subject subject;
+        public Subject subject;
         private DbConnection dbConnection;
+        private SqlConnection _SqlConn { get; set; }
+        private SqlCommand _Comm { get; set; }
 
-        public DataSubject(DbConnection dbc)
+        public DataSubject()
         {
-            dbConnection = dbc;
             InitializeComponent();
             subject = new Subject();
+            this.DataContext = subject;
+            dbConnection = new DbConnection();
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -119,41 +122,54 @@ namespace StudentLife
 
         private void ExecuteDBOperations(string stringSQL, string msg)
         {
-            dbConnection.Comm.CommandText = stringSQL;
-            dbConnection.Comm.CommandType = CommandType.Text;
-            dbConnection.Comm.Parameters.Clear();
-            try
+            var dbConnection = new DbConnection();
+            using (_SqlConn = new SqlConnection(dbConnection.PrepareStringConnection()))
             {
-                int n = dbConnection.Comm.ExecuteNonQuery();
-                if (n > 0)
+                _Comm = _SqlConn.CreateCommand();
+                _SqlConn.Open();
+
+                _Comm.CommandText = stringSQL;
+                _Comm.CommandType = CommandType.Text;
+                _Comm.Parameters.Clear();
+                try
                 {
-                    MessageBox.Show(msg);
-                    LoadDataManagementGrid(subject.PrepareSQLForDataManagementGrid());
-                    ResetAll();
+                    int n = _Comm.ExecuteNonQuery();
+                    if (n > 0)
+                    {
+                        MessageBox.Show(msg);
+                        LoadDataManagementGrid(subject.PrepareSQLForDataManagementGrid());
+                        ResetAll();
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("UNIQUE KEY constraint"))
-                    MessageBox.Show("Row already existent");
-                else
-                    MessageBox.Show(ex.Message);
+                catch (Exception ex)
+                {
+                    if (ex.Message.Contains("UNIQUE KEY constraint"))
+                        MessageBox.Show("Row already existent");
+                    else
+                        MessageBox.Show(ex.Message);
+                }
             }
         }
 
         private void LoadDataManagementGrid(string stringSQL)
         {
-            dbConnection.Comm.CommandText = stringSQL;
-            dbConnection.Comm.CommandType = CommandType.Text;
-
-            using (SqlDataReader reader = dbConnection.Comm.ExecuteReader())
+            var dbConnection = new DbConnection();
+            using (_SqlConn = new SqlConnection(dbConnection.PrepareStringConnection()))
             {
-                if (reader.HasRows)
-                {
-                    DataTable dt = new DataTable();
-                    dt.Load(reader);
-                    Display_DataGrid.ItemsSource = dt.DefaultView;
+                _Comm = _SqlConn.CreateCommand();
+                _SqlConn.Open();
 
+                _Comm.CommandText = stringSQL;
+                _Comm.CommandType = CommandType.Text;
+
+                using (SqlDataReader reader = _Comm.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Load(reader);
+                        Display_DataGrid.ItemsSource = dt.DefaultView;
+                    }
                 }
             }
         }

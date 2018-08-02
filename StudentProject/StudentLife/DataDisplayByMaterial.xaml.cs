@@ -21,14 +21,13 @@ namespace StudentLife
 
     public partial class DataDisplayByMaterial : UserControl
     {
-        private DbConnection _DbConnection;
+        private DbConnection _DbConnection { get; set; }
+        private SqlConnection _SqlConn { get; set; }
+        private SqlCommand _Comm { get; set; }
 
-        public DataDisplayByMaterial(DbConnection dbc)
+        public DataDisplayByMaterial()
         {
-            _DbConnection = dbc;
             InitializeComponent();
-
-
         }
 
         private void Homeworks_DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -59,21 +58,28 @@ namespace StudentLife
 
         private void Subject_ComboBox_Initialized(object sender, EventArgs e)
         {
-            _DbConnection.Comm.CommandText = "select Description from Subjects order by Description";
-            _DbConnection.Comm.CommandType = CommandType.Text;
-            var descriptionList = new List<string>();
-            using (SqlDataReader reader = _DbConnection.Comm.ExecuteReader())
+            var dbConnection = new DbConnection();
+            var homeWorkList = new List<HomeWork>();
+            using (_SqlConn = new SqlConnection(dbConnection.PrepareStringConnection()))
             {
-                if (reader.HasRows)
+                _Comm = _SqlConn.CreateCommand();
+                _SqlConn.Open();
+                _Comm.CommandText = "select Description from Subjects order by Description";
+                _Comm.CommandType = CommandType.Text;
+                var descriptionList = new List<string>();
+                using (SqlDataReader reader = _Comm.ExecuteReader())
                 {
-                    while (reader.Read())
+                    if (reader.HasRows)
                     {
-                        descriptionList.Add(reader.GetString(0));
+                        while (reader.Read())
+                        {
+                            descriptionList.Add(reader.GetString(0));
+                        }
                     }
                 }
+                Subject_ComboBox.ItemsSource = null;
+                Subject_ComboBox.ItemsSource = descriptionList;
             }
-            Subject_ComboBox.ItemsSource = null;
-            Subject_ComboBox.ItemsSource = descriptionList;
         }
 
         private void Subject_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -83,67 +89,71 @@ namespace StudentLife
 
         public void LoadDataGrid(string subject)
         {
-
+            var dbConnection = new DbConnection();
             Homeworks_DataGrid.ItemsSource = null;
-            _DbConnection.Comm.CommandText = "select h.Description, CONVERT(date, h.StartDate), CONVERT(date, h.EndDate), s.Description" +
+            using (_SqlConn = new SqlConnection(dbConnection.PrepareStringConnection()))
+            {
+                _Comm = _SqlConn.CreateCommand();
+                _SqlConn.Open();
+
+                _Comm.CommandText = "select h.Description, CONVERT(date, h.StartDate), CONVERT(date, h.EndDate), s.Description" +
                                     " from Homeworks as h " +
                                     "join Subjects as s on s.Id = h.SubjectId " +
                                     $"where s.Description = '{subject}' " +
                                      "order by h.StartDate ";
-
-            _DbConnection.Comm.CommandType = CommandType.Text;
-            var homeWorkList = new List<HomeWork>();
-            using (SqlDataReader reader = _DbConnection.Comm.ExecuteReader())
-            {
-                if (reader.HasRows)
+                _Comm.CommandType = CommandType.Text;
+                var homeWorkList = new List<HomeWork>();
+                using (SqlDataReader reader = _Comm.ExecuteReader())
                 {
-                    while (reader.Read())
+                    if (reader.HasRows)
                     {
-                        HomeWork hw = new HomeWork
+                        while (reader.Read())
                         {
-                            Description = reader.GetString(0),
-                            Start_Date = reader.GetDateTime(1),
-                            End_Date = reader.IsDBNull(2)
-                            ? (DateTime?)null
-                            : reader.GetDateTime(2),
-                            SubjectDescription = reader.GetString(3)
-                        };
-                        hw.StartDate = hw.Start_Date.ToString("dd/MM/yyyy");
-                        hw.EndDate = hw.End_Date == null ? "" : hw.End_Date.Value.ToString("dd/MM/yyyy");
-                        homeWorkList.Add(hw);
+                            HomeWork hw = new HomeWork
+                            {
+                                Description = reader.GetString(0),
+                                Start_Date = reader.GetDateTime(1),
+                                End_Date = reader.IsDBNull(2)
+                                ? (DateTime?)null
+                                : reader.GetDateTime(2),
+                                SubjectDescription = reader.GetString(3)
+                            };
+                            hw.StartDate = hw.Start_Date.ToString("dd/MM/yyyy");
+                            hw.EndDate = hw.End_Date == null ? "" : hw.End_Date.Value.ToString("dd/MM/yyyy");
+                            homeWorkList.Add(hw);
+                        }
+                        Homeworks_DataGrid.ItemsSource = homeWorkList;
                     }
-                    Homeworks_DataGrid.ItemsSource = homeWorkList;
                 }
-            }
 
-            ClassTasks_DataGrid.ItemsSource = null;
-            _DbConnection.Comm.CommandText = "select ctt.Description, CONVERT(date, ct.WhenDate), ct.Vote " +
-                                    "from ClassroomTasks as ct " +
-                                    "join Subjects as s on s.Id = SubjectId " +
-                                    "join ClassroomTaskTypes as ctt on ctt.Id = TaskId " +
-                                    $"where s.Description = '{subject}' " +
-                                    "order by ct.WhenDate ";
-
-            _DbConnection.Comm.CommandType = CommandType.Text;
-            var classRoomTask = new List<ClassRoomTask>();
-            using (SqlDataReader reader = _DbConnection.Comm.ExecuteReader())
-            {
-                if (reader.HasRows)
+                ClassTasks_DataGrid.ItemsSource = null;
+                _Comm.CommandText = "select ctt.Description, CONVERT(date, ct.WhenDate), ct.Vote " +
+                                        "from ClassroomTasks as ct " +
+                                        "join Subjects as s on s.Id = SubjectId " +
+                                        "join ClassroomTaskTypes as ctt on ctt.Id = TaskId " +
+                                        $"where s.Description = '{subject}' " +
+                                        "order by ct.WhenDate ";
+                _Comm.CommandType = CommandType.Text;
+                var classRoomTask = new List<ClassRoomTask>();
+                using (SqlDataReader reader = _Comm.ExecuteReader())
                 {
-                    while (reader.Read())
+                    if (reader.HasRows)
                     {
-                        ClassRoomTask crt = new ClassRoomTask
+                        while (reader.Read())
                         {
-                            ClassRoomTaskType = reader.GetString(0),
-                            When_Date = reader.GetDateTime(1),
-                            Vote = reader.IsDBNull(2)
-                            ? ""
-                            : reader.GetInt32(2).ToString(),
-                        };
-                        crt.WhenDate = crt.When_Date.ToString("dd/MM/yyyy");
-                        classRoomTask.Add(crt);
+                            ClassRoomTask crt = new ClassRoomTask
+                            {
+                                ClassRoomTaskType = reader.GetString(0),
+                                When_Date = reader.GetDateTime(1),
+                                Vote = reader.IsDBNull(2)
+                                ? ""
+                                : reader.GetInt32(2).ToString(),
+                            };
+                            crt.WhenDate = crt.When_Date.ToString("dd/MM/yyyy");
+                            classRoomTask.Add(crt);
+                        }
+                        ClassTasks_DataGrid.ItemsSource = classRoomTask;
                     }
-                    ClassTasks_DataGrid.ItemsSource = classRoomTask;
                 }
             }
         }

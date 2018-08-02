@@ -21,14 +21,14 @@ namespace StudentLife
 {
     public partial class DataDisplay : UserControl
     {
-        public GridDisplayCreator gdc;
+        private GridDisplayCreator _GridDisplayCreator;
 
-        public DataDisplay(DbConnection dbc)
+        public DataDisplay()
         {
             InitializeComponent();
-            gdc = new GridDisplayCreator(dbc);
-            gdc.LoadDataGrid(ToDoTasks_DataGrid, new OperatorsSQL(">=", "is", "or"));
-            gdc.LoadDataGrid(DoneTasks_DataGrid, new OperatorsSQL("<", "is not", "and"));
+            _GridDisplayCreator = new GridDisplayCreator();
+            _GridDisplayCreator.LoadDataGrid(ToDoTasks_DataGrid, new OperatorsSQL(">=", "is", "or"));
+            _GridDisplayCreator.LoadDataGrid(DoneTasks_DataGrid, new OperatorsSQL("<", "is not", "and"));
         }
 
         private void ToDoTasks_DataGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

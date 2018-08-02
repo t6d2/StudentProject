@@ -108,7 +108,7 @@
                         <Label Content="Task Type" ></Label>
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="200">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" MinWidth="220">
                         <TextBlock x:Name="Id_TextBlock" Text="{Binding Id, Mode=TwoWay}" 
                                    Margin="5,10"/>
                         <TextBox x:Name="Description_TextBox" Text="{Binding Description, Mode=TwoWay}" 
